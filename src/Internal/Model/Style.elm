@@ -1,6 +1,7 @@
-module Internal.Style exposing (Attribute(..))
+module Internal.Model.Style exposing (Attribute(..))
 
 import Color
+import PdfMake.Page exposing (TextAlignment)
 
 
 type Attribute
@@ -10,3 +11,4 @@ type Attribute
     | FontSize Int
     | Italic
     | LineHeight Float
+    | Alignment TextAlignment

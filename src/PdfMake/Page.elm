@@ -1,4 +1,10 @@
-module PdfMake.Page exposing (PageBreak(..), PageOrientation(..), PageSize(..))
+module PdfMake.Page
+    exposing
+        ( PageBreak(..)
+        , PageOrientation(..)
+        , PageSize(..)
+        , TextAlignment(..)
+        )
 
 
 type PageBreak
@@ -62,3 +68,10 @@ type PageSize
     | LEGAL
     | LETTER
     | TABLOID
+
+
+type TextAlignment
+    = Left
+    | Right
+    | Centered
+    | Justified
