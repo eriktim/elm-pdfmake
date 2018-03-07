@@ -1,4 +1,4 @@
-module Internal.Style exposing (Attribute(..))
+module Internal.Model.Style exposing (Attribute(..))
 
 import Color
 

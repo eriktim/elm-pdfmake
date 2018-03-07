@@ -6,6 +6,7 @@ import Test exposing (..)
 import PdfMake exposing (doc, docDefinition)
 import PdfMake.Node exposing (text)
 import PdfMake.Page exposing (PageSize(..))
+import Spec.Util exposing (isEqual)
 
 
 suite : Test
@@ -20,9 +21,28 @@ suite =
                 ]
     in
         test "basic doc definition" <|
-            \_ ->
-                Expect.equal (docDefinition pdf) result
+            isEqual (docDefinition pdf) result
 
 
 result =
-    "{pageSize: 'A4',pageOrientation: 'portrait',pageMargins: [72,72,72,72],content: [{text: 'First paragraph'},{text: 'Another paragraph, this time a little bit longer to make sure, this line will be divided into at least two lines'}],defaultStyle: {}}"
+    """
+    {
+      content: [
+        {
+          text: 'First paragraph'
+        },
+        {
+          text: 'Another paragraph, this time a little bit longer to make sure, this line will be divided into at least two lines'
+        }
+      ],
+      defaultStyle: {},
+      pageMargins: [
+        72,
+        72,
+        72,
+        72
+      ],
+      pageOrientation: 'portrait',
+      pageSize: 'A4'
+    }
+    """

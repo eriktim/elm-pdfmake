@@ -1,8 +1,8 @@
 module Internal.Encode.Page exposing (pageOrientation, pageMargins, pageSize)
 
 import PdfMake.Page exposing (PageOrientation(..), PageSize(..))
-import Internal.Encode.Encode exposing (dpi)
-import Internal.Object exposing (Value, list, number, object, string)
+import Internal.Encode exposing (dpi)
+import Internal.Object exposing (Value, list, float, object, string)
 
 
 pageOrientation : PageOrientation -> Value
@@ -18,7 +18,7 @@ pageOrientation orientation =
 
 pageMargins : ( Float, Float, Float, Float ) -> Value
 pageMargins ( l, t, r, b ) =
-    list <| List.map (number << dpi) [ l, t, r, b ]
+    list <| List.map (float << dpi) [ l, t, r, b ]
 
 
 pageSize : PageSize -> Value

@@ -11,9 +11,9 @@ module PdfMake.Node
         , ul
         )
 
-import Internal.Node as Node exposing (Node(..))
-import Internal.Attribute as Attribute
-import Internal.Style as Style
+import Internal.Model.Node as Node exposing (Node(..))
+import Internal.Model.Attribute as Attribute
+import Internal.Model.Style as Style
 
 
 type alias Node =

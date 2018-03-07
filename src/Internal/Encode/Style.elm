@@ -2,8 +2,8 @@ module Internal.Encode.Style exposing (value, values)
 
 import Char
 import Color
-import Internal.Object exposing (Value, bool, object, string, number)
-import Internal.Style exposing (Attribute(..))
+import Internal.Object exposing (Value, bool, object, string, int, float)
+import Internal.Model.Style exposing (Attribute(..))
 
 
 value : List Attribute -> Value
@@ -33,13 +33,13 @@ attrValue attr =
             ( "font", string font )
 
         FontSize size ->
-            ( "fontSize", number size )
+            ( "fontSize", int size )
 
         Italic ->
             ( "italics", bool True )
 
         LineHeight height ->
-            ( "lineHeight", number height )
+            ( "lineHeight", float height )
 
 
 

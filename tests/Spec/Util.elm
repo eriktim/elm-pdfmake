@@ -1,8 +1,14 @@
-module Spec.Util exposing (stringify)
+module Spec.Util exposing (isEqual, stringify)
 
+import Expect exposing (Expectation)
 import PdfMake exposing (doc, docDefinition)
 import PdfMake.Node exposing (Node)
 import PdfMake.Page exposing (PageSize(A4))
+
+
+isEqual : String -> String -> (() -> Expectation)
+isEqual expected result =
+    \_ -> Expect.equal (escape result) (escape expected)
 
 
 stringify : Node -> String
@@ -15,9 +21,21 @@ stringify node =
                 [ node
                 ]
 
-        str =
-            docDefinition pdf
+        lines =
+            String.lines <| docDefinition pdf
     in
-        str
-            |> String.dropRight (String.length "],defaultStyle: {}}")
-            |> String.dropLeft (String.length "{pageSize: 'A4',pageOrientation: 'portrait',pageMargins: [72,72,72,72],content: [")
+        lines
+            |> (List.reverse << List.drop 10 << List.reverse)
+            |> List.drop 1
+            |> List.map (String.dropLeft 2)
+            |> String.join (String.fromChar '\n')
+            |> String.dropRight 1
+
+
+
+-- INTERNAL
+
+
+escape : String -> String
+escape =
+    String.filter ((/=) ' ') << String.trim

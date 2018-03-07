@@ -1,10 +1,10 @@
-module Internal.Node
+module Internal.Model.Node
     exposing
         ( Node(..)
         )
 
-import Internal.Attribute as Attribute exposing (Attribute)
-import Internal.Style as Style
+import Internal.Model.Attribute as Attribute exposing (Attribute)
+import Internal.Model.Style as Style
 
 
 type Node

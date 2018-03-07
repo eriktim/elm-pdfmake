@@ -1,10 +1,10 @@
 module Internal.Encode.Node exposing (value)
 
 import PdfMake.Page exposing (PageBreak(..))
-import Internal.Node exposing (Node(..))
+import Internal.Model.Node exposing (Node(..))
 import Internal.Encode.Attribute as Attribute
 import Internal.Encode.Style as Style
-import Internal.Object exposing (Value, list, number, object, string)
+import Internal.Object exposing (Value, list, float, object, string)
 
 
 value : Node -> Value
@@ -40,14 +40,14 @@ value node =
 
             ImageSizeNode image ->
                 [ ( "image", string image.image )
-                , ( "width", number image.width )
-                , ( "height", number image.height )
+                , ( "width", float image.width )
+                , ( "height", float image.height )
                 ]
                     ++ List.concatMap Attribute.values image.attrs
 
             ImageFitNode image ->
                 [ ( "image", string image.image )
-                , ( "fit", list [ number image.width, number image.height ] )
+                , ( "fit", list [ float image.width, float image.height ] )
                 ]
                     ++ List.concatMap Attribute.values image.attrs
 

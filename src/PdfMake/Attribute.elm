@@ -7,7 +7,7 @@ module PdfMake.Attribute
         )
 
 import PdfMake.Page exposing (PageBreak)
-import Internal.Attribute as Attribute exposing (Attribute(..))
+import Internal.Model.Attribute as Attribute exposing (Attribute(..))
 
 
 type alias Attribute =

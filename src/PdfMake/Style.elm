@@ -10,7 +10,7 @@ module PdfMake.Style
         )
 
 import Color
-import Internal.Style as Style exposing (Attribute(..))
+import Internal.Model.Style as Style exposing (Attribute(..))
 
 
 type alias Attribute =

@@ -2,7 +2,7 @@ module Internal.Encode.Model exposing (value)
 
 import PdfMake.Page exposing (PageOrientation(..))
 import Internal.Model exposing (Model)
-import Internal.Object exposing (Value, list, number, object, string)
+import Internal.Object exposing (Value, list, object)
 import Internal.Encode.Node as Node
 import Internal.Encode.Page as Page
 import Internal.Encode.Style as Style

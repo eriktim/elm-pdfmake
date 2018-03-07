@@ -7,35 +7,100 @@ import Test exposing (..)
 import PdfMake exposing (doc, docDefinition)
 import PdfMake.Node exposing (text)
 import PdfMake.Style exposing (..)
-import Spec.Util exposing (stringify)
+import Spec.Util exposing (isEqual, stringify)
 
 
 suite : Test
 suite =
-    let
-        bold_ =
-            stringify <| text [ bold ] "foo"
+    describe "style attributes"
+        [ test "bold" boldSpec
+        , test "color" colorSpec
+        , test "font" fontSpec
+        , test "fontSize" fontSizeSpec
+        , test "italic" italicSpec
+        , test "lineHeight" lineHeightSpec
+        ]
 
-        color_ =
-            stringify <| text [ color Color.red ] "foo"
 
-        font_ =
-            stringify <| text [ font "MyFont" ] "foo"
+boldSpec =
+    text [ bold ] "foo"
+        |> stringify
+        |> isEqual
+            """
+                content: [
+                  {
+                    bold: true,
+                    text: 'foo'
+                  }
+                ]
+                """
 
-        fontSize_ =
-            stringify <| text [ fontSize 123 ] "foo"
 
-        italic_ =
-            stringify <| text [ italic ] "foo"
-
-        lineHeight_ =
-            stringify <| text [ lineHeight 55 ] "foo"
-    in
-        describe "style attributes"
-            [ test "bold" <| \_ -> Expect.equal bold_ "{text: 'foo',bold: true}"
-            , test "color" <| \_ -> Expect.equal color_ "{text: 'foo',color: '#bf0000'}"
-            , test "font" <| \_ -> Expect.equal font_ "{text: 'foo',font: 'MyFont'}"
-            , test "fontSize" <| \_ -> Expect.equal fontSize_ "{text: 'foo',fontSize: 123}"
-            , test "italic" <| \_ -> Expect.equal italic_ "{text: 'foo',italics: true}"
-            , test "lineHeight" <| \_ -> Expect.equal lineHeight_ "{text: 'foo',lineHeight: 55}"
+colorSpec =
+    text [ color Color.red ] "foo"
+        |> stringify
+        |> isEqual
+            """
+            content: [
+              {
+                color: '#bf0000',
+                text: 'foo'
+              }
             ]
+            """
+
+
+fontSpec =
+    text [ font "MyFont" ] "foo"
+        |> stringify
+        |> isEqual
+            """
+            content: [
+              {
+                font: 'MyFont',
+                text: 'foo'
+              }
+            ]
+            """
+
+
+fontSizeSpec =
+    text [ fontSize 123 ] "foo"
+        |> stringify
+        |> isEqual
+            """
+            content: [
+              {
+                fontSize: 123,
+                text: 'foo'
+              }
+            ]
+            """
+
+
+italicSpec =
+    text [ italic ] "foo"
+        |> stringify
+        |> isEqual
+            """
+            content: [
+              {
+                italics: true,
+                text: 'foo'
+              }
+            ]
+            """
+
+
+lineHeightSpec =
+    text [ lineHeight 55 ] "foo"
+        |> stringify
+        |> isEqual
+            """
+            content: [
+              {
+                lineHeight: 55,
+                text: 'foo'
+              }
+            ]
+            """
