@@ -1,16 +1,16 @@
 module PdfMake
     exposing
         ( PdfMake
-        , docDefinition
         , doc
+        , docDefinition
         )
 
-import PdfMake.Page exposing (PageSize(A4, LETTER))
 import Internal.Encode.Model as Model
 import Internal.Model exposing (Model)
 import Internal.Model.Node exposing (Node)
 import Internal.Model.Style as Style
 import Internal.Object exposing (stringify)
+import PdfMake.Page exposing (PageSize(A4, LETTER))
 
 
 type PdfMake

@@ -2,8 +2,8 @@ module Internal.Encode.Style exposing (value, values)
 
 import Char
 import Color
-import Internal.Object exposing (Value, bool, object, string, int, float)
 import Internal.Model.Style exposing (Attribute(..))
+import Internal.Object exposing (Value, bool, float, int, object, string)
 
 
 value : List Attribute -> Value
@@ -61,7 +61,7 @@ colorToHex color =
         b =
             componentToHex rgb.blue
     in
-        "#" ++ r ++ g ++ b
+    "#" ++ r ++ g ++ b
 
 
 componentToHex : Int -> String
@@ -73,7 +73,7 @@ componentToHex val =
         r =
             val - l
     in
-        toHex l ++ toHex r
+    toHex l ++ toHex r
 
 
 toHex : Int -> String
@@ -82,8 +82,8 @@ toHex val =
         val_ =
             clamp 0 16 val
     in
-        String.fromChar <|
-            if val_ <= 10 then
-                Char.fromCode (48 + val_)
-            else
-                Char.fromCode (86 + val_)
+    String.fromChar <|
+        if val_ <= 10 then
+            Char.fromCode (48 + val_)
+        else
+            Char.fromCode (86 + val_)

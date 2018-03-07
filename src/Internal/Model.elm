@@ -1,9 +1,9 @@
 module Internal.Model exposing (Model)
 
 import Dict
-import PdfMake.Page exposing (PageOrientation, PageSize)
 import Internal.Model.Node exposing (Node)
 import Internal.Model.Style exposing (Attribute)
+import PdfMake.Page exposing (PageOrientation, PageSize)
 
 
 type alias Model =

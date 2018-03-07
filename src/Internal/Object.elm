@@ -1,4 +1,4 @@
-module Internal.Object exposing (Value, arg, string, int, float, list, object, bool, function, const, stringify)
+module Internal.Object exposing (Value, arg, bool, const, float, function, int, list, object, string, stringify)
 
 import Dict exposing (Dict)
 
@@ -90,7 +90,7 @@ stringify_ indent value =
                     tuples =
                         List.map (\( k, v ) -> k ++ ": " ++ stringify_ (indent + 2) v) <| Dict.toList dict
                 in
-                    "{" ++ newLine ++ space2 ++ String.join ("," ++ newLine ++ space2) tuples ++ newLine ++ space ++ "}"
+                "{" ++ newLine ++ space2 ++ String.join ("," ++ newLine ++ space2) tuples ++ newLine ++ space ++ "}"
 
         ArrayValue items ->
             if List.isEmpty items then
@@ -103,7 +103,7 @@ stringify_ indent value =
                     space2 =
                         String.repeat (indent + 2) " "
                 in
-                    "[" ++ newLine ++ space2 ++ String.join ("," ++ newLine ++ space2) (List.map (stringify_ <| indent + 2) items) ++ newLine ++ space ++ "]"
+                "[" ++ newLine ++ space2 ++ String.join ("," ++ newLine ++ space2) (List.map (stringify_ <| indent + 2) items) ++ newLine ++ space ++ "]"
 
         StringValue value ->
             "'" ++ value ++ "'"

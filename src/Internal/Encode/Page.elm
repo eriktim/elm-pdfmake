@@ -1,8 +1,8 @@
-module Internal.Encode.Page exposing (pageOrientation, pageMargins, pageSize)
+module Internal.Encode.Page exposing (pageMargins, pageOrientation, pageSize)
 
-import PdfMake.Page exposing (PageOrientation(..), PageSize(..))
 import Internal.Encode exposing (dpi)
-import Internal.Object exposing (Value, list, float, object, string)
+import Internal.Object exposing (Value, float, list, object, string)
+import PdfMake.Page exposing (PageOrientation(..), PageSize(..))
 
 
 pageOrientation : PageOrientation -> Value

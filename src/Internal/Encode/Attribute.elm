@@ -1,10 +1,10 @@
 module Internal.Encode.Attribute exposing (values)
 
-import PdfMake.Page exposing (PageBreak(..))
-import Internal.Model.Attribute exposing (Attribute(..))
 import Internal.Encode exposing (dpi)
 import Internal.Encode.Style as Style
-import Internal.Object exposing (Value, list, float, object, string)
+import Internal.Model.Attribute exposing (Attribute(..))
+import Internal.Object exposing (Value, float, list, object, string)
+import PdfMake.Page exposing (PageBreak(..))
 
 
 values : Attribute -> List ( String, Value )

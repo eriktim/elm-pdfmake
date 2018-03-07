@@ -6,8 +6,8 @@ module PdfMake.Attribute
         , pageBreak
         )
 
-import PdfMake.Page exposing (PageBreak)
 import Internal.Model.Attribute as Attribute exposing (Attribute(..))
+import PdfMake.Page exposing (PageBreak)
 
 
 type alias Attribute =

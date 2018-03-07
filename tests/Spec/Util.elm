@@ -24,12 +24,12 @@ stringify node =
         lines =
             String.lines <| docDefinition pdf
     in
-        lines
-            |> (List.reverse << List.drop 10 << List.reverse)
-            |> List.drop 1
-            |> List.map (String.dropLeft 2)
-            |> String.join (String.fromChar '\n')
-            |> String.dropRight 1
+    lines
+        |> (List.reverse << List.drop 10 << List.reverse)
+        |> List.drop 1
+        |> List.map (String.dropLeft 2)
+        |> String.join (String.fromChar '\n')
+        |> String.dropRight 1
 
 
 

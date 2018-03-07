@@ -3,11 +3,11 @@ module Spec.PdfMake.Style exposing (suite)
 import Color
 import Expect exposing (Expectation)
 import Fuzz exposing (Fuzzer, int, list, string)
-import Test exposing (..)
 import PdfMake exposing (doc, docDefinition)
 import PdfMake.Node exposing (text)
 import PdfMake.Style exposing (..)
 import Spec.Util exposing (isEqual, stringify)
+import Test exposing (..)
 
 
 suite : Test

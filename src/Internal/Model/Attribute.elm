@@ -1,7 +1,7 @@
 module Internal.Model.Attribute exposing (Attribute(..))
 
-import PdfMake.Page exposing (PageBreak)
 import Internal.Model.Style as Style
+import PdfMake.Page exposing (PageBreak)
 
 
 type Attribute

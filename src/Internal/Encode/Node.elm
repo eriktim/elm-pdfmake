@@ -1,10 +1,10 @@
 module Internal.Encode.Node exposing (value)
 
-import PdfMake.Page exposing (PageBreak(..))
-import Internal.Model.Node exposing (Node(..))
 import Internal.Encode.Attribute as Attribute
 import Internal.Encode.Style as Style
-import Internal.Object exposing (Value, list, float, object, string)
+import Internal.Model.Node exposing (Node(..))
+import Internal.Object exposing (Value, float, list, object, string)
+import PdfMake.Page exposing (PageBreak(..))
 
 
 value : Node -> Value
