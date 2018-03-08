@@ -27,13 +27,13 @@ boldSpec =
         |> stringify
         |> isEqual
             """
-                content: [
-                  {
-                    bold: true,
-                    text: 'foo'
-                  }
-                ]
-                """
+            content: [
+              {
+                bold: true,
+                text: 'foo'
+              }
+            ]
+            """
 
 
 colorSpec =
