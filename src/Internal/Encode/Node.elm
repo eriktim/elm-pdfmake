@@ -5,7 +5,7 @@ import Internal.Encode.Attribute as Attribute
 import Internal.Encode.Style as Style
 import Internal.Encode.Table as Table
 import Internal.Model.Node exposing (Node(..), TableCell(..))
-import Internal.Object exposing (Value, float, int, list, object, string)
+import Internal.Object exposing (Value, float, int, list, literal, object, string)
 import PdfMake.Page exposing (PageBreak(..))
 
 
@@ -57,6 +57,11 @@ value_ node =
 
         TextNode text ->
             ( "text", string text.text )
+                :: List.concatMap Attribute.values text.attrs
+                ++ Style.values text.style
+
+        LiteralNode text ->
+            ( "text", literal text.text )
                 :: List.concatMap Attribute.values text.attrs
                 ++ Style.values text.style
 

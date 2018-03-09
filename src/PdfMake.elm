@@ -7,6 +7,7 @@ module PdfMake
 
 import Internal.Encode.Model as Model
 import Internal.Model exposing (Model)
+import Internal.Model.Function exposing (HeaderFooter)
 import Internal.Model.Node exposing (Node)
 import Internal.Model.Style as Style
 import Internal.Object exposing (stringify)
@@ -17,14 +18,16 @@ type PdfMake
     = PdfMake Model
 
 
-doc : PageSize -> ( Float, Float, Float, Float ) -> List Style.Attribute -> List Node -> PdfMake
-doc pageSize margins style nodes =
+doc : PageSize -> ( Float, Float, Float, Float ) -> Maybe HeaderFooter -> Maybe HeaderFooter -> List Style.Attribute -> List Node -> PdfMake
+doc pageSize margins header footer style nodes =
     PdfMake
         { pageSize = pageSize
         , content = nodes
         , pageOrientation = Nothing
         , pageMargins = Just margins
         , defaultStyle = Just style
+        , header = header
+        , footer = footer
         }
 
 

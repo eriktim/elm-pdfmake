@@ -1,4 +1,18 @@
-module Internal.Object exposing (Value, arg, bool, const, float, function, int, list, object, string, stringify)
+module Internal.Object
+    exposing
+        ( Value
+        , arg
+        , bool
+        , const
+        , float
+        , function
+        , int
+        , list
+        , literal
+        , object
+        , string
+        , stringify
+        )
 
 import Dict exposing (Dict)
 
@@ -7,6 +21,7 @@ type Value
     = ObjectValue (Dict String Value)
     | ArrayValue (List Value)
     | StringValue String
+    | LiteralValue String
     | IntValue Int
     | FloatValue Float
     | BoolValue Bool
@@ -15,6 +30,11 @@ type Value
 string : String -> Value
 string =
     StringValue
+
+
+literal : String -> Value
+literal =
+    LiteralValue
 
 
 int : Int -> Value
@@ -107,6 +127,9 @@ stringify_ indent value =
 
         StringValue value ->
             "'" ++ value ++ "'"
+
+        LiteralValue value ->
+            value
 
         IntValue value ->
             toString value

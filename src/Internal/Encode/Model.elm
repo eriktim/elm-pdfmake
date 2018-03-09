@@ -4,7 +4,9 @@ import Internal.Encode.Node as Node
 import Internal.Encode.Page as Page
 import Internal.Encode.Style as Style
 import Internal.Model exposing (Model)
-import Internal.Object exposing (Value, list, object)
+import Internal.Model.Function exposing (HeaderFooter(..))
+import Internal.Object exposing (Value, list, literal, object, stringify)
+import PdfMake.Function exposing (currentPageArg, pageCountArg, pageSizeArg)
 import PdfMake.Page exposing (PageOrientation(..))
 
 
@@ -16,4 +18,40 @@ value model =
         , ( "pageMargins", Page.pageMargins <| Maybe.withDefault ( 1, 1, 1, 1 ) model.pageMargins )
         , ( "content", list <| List.map Node.value model.content )
         , ( "defaultStyle", Style.value <| Maybe.withDefault [] model.defaultStyle )
+        , ( "header", Maybe.withDefault (literal "undefined") <| Maybe.map headerFooter model.header )
+        , ( "footer", Maybe.withDefault (literal "undefined") <| Maybe.map headerFooter model.footer )
         ]
+
+
+
+-- INTERNAL
+
+
+headerFooter : HeaderFooter -> Value
+headerFooter hf =
+    let
+        function =
+            case hf of
+                Header fn ->
+                    fn
+
+                Footer fn ->
+                    fn
+
+        nodes =
+            function.nodes
+                |> List.map (stringify << Node.value)
+                |> List.indexedMap (\index value -> "const $node" ++ (toString <| index + 1) ++ " = " ++ value ++ ";")
+                |> String.join " "
+    in
+    literal <|
+        "("
+            ++ currentPageArg
+            ++ ", "
+            ++ pageCountArg
+            ++ ", "
+            ++ pageSizeArg
+            ++ ") => {"
+            ++ nodes
+            ++ function.body
+            ++ "}"

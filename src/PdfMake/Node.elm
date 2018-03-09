@@ -4,6 +4,7 @@ module PdfMake.Node
         , columns
         , image
         , imageFit
+        , literal
         , ol
         , stack
         , table
@@ -54,6 +55,15 @@ ol : List Attribute.Attribute -> List Node.Node -> Node.Node
 ol attrs items =
     OrderedListNode
         { ol = items
+        , attrs = attrs
+        }
+
+
+literal : List Attribute.Attribute -> List Style.Attribute -> String -> Node.Node
+literal attrs style text_ =
+    LiteralNode
+        { text = text_
+        , style = style
         , attrs = attrs
         }
 

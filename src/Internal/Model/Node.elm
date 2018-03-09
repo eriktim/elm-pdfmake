@@ -20,6 +20,7 @@ type Node
     | UnorderedListNode UnorderedList
     | TableNode Table
     | TextNode Text
+    | LiteralNode Literal
     | TableOfContentsNode
     | ImageSizeNode ImageSized
     | ImageFitNode ImageFitted
@@ -73,6 +74,13 @@ type alias Table =
 
 
 type alias Text =
+    { text : String
+    , style : List Style.Attribute
+    , attrs : List Attribute
+    }
+
+
+type alias Literal =
     { text : String
     , style : List Style.Attribute
     , attrs : List Attribute
