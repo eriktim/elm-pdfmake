@@ -1,5 +1,6 @@
 module Internal.Encode.Node exposing (value)
 
+import Internal.Encode exposing (dpi)
 import Internal.Encode.Attribute as Attribute
 import Internal.Encode.Style as Style
 import Internal.Encode.Table as Table
@@ -64,14 +65,14 @@ value_ node =
 
         ImageSizeNode image ->
             [ ( "image", string image.image )
-            , ( "width", float image.width )
-            , ( "height", float image.height )
+            , ( "width", float <| dpi image.width )
+            , ( "height", float <| dpi image.height )
             ]
                 ++ List.concatMap Attribute.values image.attrs
 
         ImageFitNode image ->
             [ ( "image", string image.image )
-            , ( "fit", list [ float image.width, float image.height ] )
+            , ( "fit", list [ float <| dpi image.width, float <| dpi image.height ] )
             ]
                 ++ List.concatMap Attribute.values image.attrs
 
@@ -87,3 +88,6 @@ cellValue cell =
     case cell of
         Cell attrs node ->
             object <| value_ node ++ List.map Table.attrValue attrs
+
+        EmptyCell ->
+            object []

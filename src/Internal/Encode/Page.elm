@@ -1,8 +1,14 @@
-module Internal.Encode.Page exposing (pageMargins, pageOrientation, pageSize)
+module Internal.Encode.Page
+    exposing
+        ( pageMargins
+        , pageOrientation
+        , pageSize
+        , textAlignment
+        )
 
 import Internal.Encode exposing (dpi)
 import Internal.Object exposing (Value, float, list, object, string)
-import PdfMake.Page exposing (PageOrientation(..), PageSize(..))
+import PdfMake.Page exposing (PageOrientation(..), PageSize(..), TextAlignment(..))
 
 
 pageOrientation : PageOrientation -> Value
@@ -174,3 +180,20 @@ pageSize size =
 
             TABLOID ->
                 "TABLOID"
+
+
+textAlignment : TextAlignment -> Value
+textAlignment alignment =
+    string <|
+        case alignment of
+            Left ->
+                "left"
+
+            Right ->
+                "right"
+
+            Centered ->
+                "centered"
+
+            Justified ->
+                "justified"

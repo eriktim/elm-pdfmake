@@ -1,11 +1,13 @@
 module PdfMake.Table
     exposing
         ( Width
+        , align
         , autoWidth
         , border
         , cell
         , cell_
         , colSpan
+        , emptyCell
         , fillColor
         , fillWidth
         , rowSpan
@@ -15,10 +17,16 @@ module PdfMake.Table
 import Color
 import Internal.Model.Node exposing (Node(TextNode), TableAttribute(..), TableCell(..))
 import Internal.Model.Table as Table exposing (Width(..))
+import PdfMake.Page exposing (TextAlignment)
 
 
 type alias Width =
     Table.Width
+
+
+align : TextAlignment -> TableAttribute
+align =
+    Alignment
 
 
 autoWidth : Width
@@ -49,6 +57,11 @@ cell_ text =
 colSpan : Int -> TableAttribute
 colSpan =
     ColSpan
+
+
+emptyCell : TableCell
+emptyCell =
+    EmptyCell
 
 
 fillWidth : Width

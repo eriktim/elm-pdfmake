@@ -1,9 +1,9 @@
 module Internal.Encode.Style exposing (value, values)
 
 import Internal.Encode.Color as Color
+import Internal.Encode.Page as Page
 import Internal.Model.Style exposing (Attribute(..))
 import Internal.Object exposing (Value, bool, float, int, object, string)
-import PdfMake.Page exposing (TextAlignment(..))
 
 
 value : List Attribute -> Value
@@ -42,25 +42,4 @@ attrValue attr =
             ( "lineHeight", float height )
 
         Alignment alignment ->
-            ( "alignment", textAlignment alignment )
-
-
-
--- HELPERS
-
-
-textAlignment : TextAlignment -> Value
-textAlignment alignment =
-    string <|
-        case alignment of
-            Left ->
-                "left"
-
-            Right ->
-                "right"
-
-            Centered ->
-                "centered"
-
-            Justified ->
-                "justified"
+            ( "alignment", Page.textAlignment alignment )

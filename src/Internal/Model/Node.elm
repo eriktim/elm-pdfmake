@@ -10,6 +10,7 @@ import Color
 import Internal.Model.Attribute as Attribute exposing (Attribute)
 import Internal.Model.Style as Style
 import Internal.Model.Table exposing (Width)
+import PdfMake.Page exposing (TextAlignment)
 
 
 type Node
@@ -51,7 +52,8 @@ type alias UnorderedList =
 
 
 type TableAttribute
-    = Border ( Bool, Bool, Bool, Bool )
+    = Alignment TextAlignment
+    | Border ( Bool, Bool, Bool, Bool )
     | ColSpan Int
     | FillColor Color.Color
     | RowSpan Int
@@ -59,6 +61,7 @@ type TableAttribute
 
 type TableCell
     = Cell (List TableAttribute) Node
+    | EmptyCell
 
 
 type alias Table =
