@@ -13,8 +13,8 @@ values attr =
         AbsolutePosition pos ->
             [ ( "absolutePosition"
               , object
-                    [ ( "x", float pos.x )
-                    , ( "y", float pos.y )
+                    [ ( "x", float <| dpi pos.x )
+                    , ( "y", float <| dpi pos.y )
                     ]
               )
             ]

@@ -6,6 +6,7 @@ module PdfMake.Node
         , imageFit
         , ol
         , stack
+        , table
         , text
         , textNode
         , ul
@@ -14,6 +15,7 @@ module PdfMake.Node
 import Internal.Model.Attribute as Attribute
 import Internal.Model.Node as Node exposing (Node(..))
 import Internal.Model.Style as Style
+import PdfMake.Table exposing (Width)
 
 
 type alias Node =
@@ -60,6 +62,16 @@ stack : List Attribute.Attribute -> List Node.Node -> Node.Node
 stack attrs stack =
     StackNode
         { stack = stack
+        , attrs = attrs
+        }
+
+
+table : List Attribute.Attribute -> List Width -> List (List Node.TableCell) -> List (List Node.TableCell) -> Node.Node
+table attrs widths headers body =
+    TableNode
+        { body = body
+        , headers = headers
+        , widths = widths
         , attrs = attrs
         }
 

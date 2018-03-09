@@ -22,15 +22,15 @@ suite =
 
 
 absolutePositionSpec =
-    textNode [ absolutePosition 12 34 ] [] "foo"
+    textNode [ absolutePosition 1 2 ] [] "foo"
         |> stringify
         |> isEqual
             """
             content: [
               {
                 absolutePosition: {
-                  x: 12,
-                  y: 34
+                  x: 72,
+                  y: 144
                 },
                 text: 'foo'
               }

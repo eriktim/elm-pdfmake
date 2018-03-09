@@ -5,6 +5,7 @@ import Expect exposing (Expectation)
 import Fuzz exposing (Fuzzer, int, list, string)
 import PdfMake exposing (doc, docDefinition)
 import PdfMake.Node exposing (text)
+import PdfMake.Page exposing (TextAlignment(..))
 import PdfMake.Style exposing (..)
 import Spec.Util exposing (isEqual, stringify)
 import Test exposing (..)
@@ -13,13 +14,28 @@ import Test exposing (..)
 suite : Test
 suite =
     describe "style attributes"
-        [ test "bold" boldSpec
+        [ test "alignment" alignmentSpec
+        , test "bold" boldSpec
         , test "color" colorSpec
         , test "font" fontSpec
         , test "fontSize" fontSizeSpec
         , test "italic" italicSpec
         , test "lineHeight" lineHeightSpec
         ]
+
+
+alignmentSpec =
+    text [ alignment Left ] "foo"
+        |> stringify
+        |> isEqual
+            """
+            content: [
+              {
+                alignment: 'left',
+                text: 'foo'
+              }
+            ]
+            """
 
 
 boldSpec =
@@ -43,7 +59,7 @@ colorSpec =
             """
             content: [
               {
-                color: '#bf0000',
+                color: '#cc0000',
                 text: 'foo'
               }
             ]

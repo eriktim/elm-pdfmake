@@ -1,10 +1,15 @@
 module Internal.Model.Node
     exposing
         ( Node(..)
+        , Table
+        , TableAttribute(..)
+        , TableCell(..)
         )
 
+import Color
 import Internal.Model.Attribute as Attribute exposing (Attribute)
 import Internal.Model.Style as Style
+import Internal.Model.Table exposing (Width)
 
 
 type Node
@@ -12,7 +17,7 @@ type Node
     | StackNode Stack
     | OrderedListNode OrderedList
     | UnorderedListNode UnorderedList
-    | TableNode
+    | TableNode Table
     | TextNode Text
     | TableOfContentsNode
     | ImageSizeNode ImageSized
@@ -33,14 +38,33 @@ type alias Stack =
     }
 
 
+type alias OrderedList =
+    { ol : List Node
+    , attrs : List Attribute
+    }
+
+
 type alias UnorderedList =
     { ul : List Node
     , attrs : List Attribute
     }
 
 
-type alias OrderedList =
-    { ol : List Node
+type TableAttribute
+    = Border ( Bool, Bool, Bool, Bool )
+    | ColSpan Int
+    | FillColor Color.Color
+    | RowSpan Int
+
+
+type TableCell
+    = Cell (List TableAttribute) Node
+
+
+type alias Table =
+    { body : List (List TableCell)
+    , headers : List (List TableCell)
+    , widths : List Width
     , attrs : List Attribute
     }
 

@@ -1,9 +1,9 @@
 module Internal.Encode.Style exposing (value, values)
 
-import Char
-import Color
+import Internal.Encode.Color as Color
 import Internal.Model.Style exposing (Attribute(..))
 import Internal.Object exposing (Value, bool, float, int, object, string)
+import PdfMake.Page exposing (TextAlignment(..))
 
 
 value : List Attribute -> Value
@@ -27,7 +27,7 @@ attrValue attr =
             ( "bold", bool True )
 
         Color color ->
-            ( "color", string <| colorToHex color )
+            ( "color", Color.value color )
 
         Font font ->
             ( "font", string font )
@@ -41,49 +41,26 @@ attrValue attr =
         LineHeight height ->
             ( "lineHeight", float height )
 
+        Alignment alignment ->
+            ( "alignment", textAlignment alignment )
+
 
 
 -- HELPERS
 
 
-colorToHex : Color.Color -> String
-colorToHex color =
-    let
-        rgb =
-            Color.toRgb color
+textAlignment : TextAlignment -> Value
+textAlignment alignment =
+    string <|
+        case alignment of
+            Left ->
+                "left"
 
-        r =
-            componentToHex rgb.red
+            Right ->
+                "right"
 
-        g =
-            componentToHex rgb.green
+            Centered ->
+                "centered"
 
-        b =
-            componentToHex rgb.blue
-    in
-    "#" ++ r ++ g ++ b
-
-
-componentToHex : Int -> String
-componentToHex val =
-    let
-        l =
-            val // 16
-
-        r =
-            val - l
-    in
-    toHex l ++ toHex r
-
-
-toHex : Int -> String
-toHex val =
-    let
-        val_ =
-            clamp 0 16 val
-    in
-    String.fromChar <|
-        if val_ <= 10 then
-            Char.fromCode (48 + val_)
-        else
-            Char.fromCode (86 + val_)
+            Justified ->
+                "justified"
