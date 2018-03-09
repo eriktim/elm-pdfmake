@@ -16,6 +16,7 @@ module PdfMake.Node
 import Internal.Model.Attribute as Attribute
 import Internal.Model.Node as Node exposing (Node(..))
 import Internal.Model.Style as Style
+import Internal.Model.Table exposing (Layout)
 import PdfMake.Table exposing (Width)
 
 
@@ -76,10 +77,11 @@ stack attrs stack =
         }
 
 
-table : List Attribute.Attribute -> List Width -> List (List Node.TableCell) -> List (List Node.TableCell) -> Node.Node
-table attrs widths headers body =
+table : List Attribute.Attribute -> List Layout -> List Width -> List (List Node.TableCell) -> List (List Node.TableCell) -> Node.Node
+table attrs layout widths headers body =
     TableNode
-        { body = body
+        { layout = layout
+        , body = body
         , headers = headers
         , widths = widths
         , attrs = attrs

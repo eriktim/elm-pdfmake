@@ -9,7 +9,7 @@ module Internal.Model.Node
 import Color
 import Internal.Model.Attribute as Attribute exposing (Attribute)
 import Internal.Model.Style as Style
-import Internal.Model.Table exposing (Width)
+import Internal.Model.Table exposing (Layout, Width)
 import PdfMake.Page exposing (TextAlignment)
 
 
@@ -66,7 +66,8 @@ type TableCell
 
 
 type alias Table =
-    { body : List (List TableCell)
+    { layout : List Layout
+    , body : List (List TableCell)
     , headers : List (List TableCell)
     , widths : List Width
     , attrs : List Attribute

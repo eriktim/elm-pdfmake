@@ -52,7 +52,9 @@ value_ node =
                         , ( "body", body )
                         ]
             in
-            [ ( "table", table_ ) ]
+            [ ( "table", table_ )
+            , ( "layout", object <| List.map Table.layoutValue table.layout )
+            ]
                 ++ List.concatMap Attribute.values table.attrs
 
         TextNode text ->

@@ -1,10 +1,16 @@
-module Internal.Model.Function exposing (HeaderFooter(..))
+module Internal.Model.Function
+    exposing
+        ( HeaderFooter(..)
+        , LineColor(..)
+        , LineWidth(..)
+        , Padding(..)
+        )
 
-import Internal.Model.Node exposing (Node)
+import Internal.Object exposing (Value)
 
 
 type alias Function =
-    { nodes : List Node
+    { values : List Value
     , body : String
     }
 
@@ -12,3 +18,15 @@ type alias Function =
 type HeaderFooter
     = Header Function
     | Footer Function
+
+
+type LineWidth
+    = LineWidth Function
+
+
+type LineColor
+    = LineColor Function
+
+
+type Padding
+    = Padding Function

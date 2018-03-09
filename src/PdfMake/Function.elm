@@ -8,6 +8,7 @@ module PdfMake.Function
         , pageSizeArg
         )
 
+import Internal.Encode.Node as Node
 import Internal.Model.Function as Function exposing (HeaderFooter(..))
 import Internal.Model.Node exposing (Node)
 
@@ -24,7 +25,7 @@ currentPageArg =
 footerFunction : List Node -> String -> HeaderFooter
 footerFunction nodes body =
     Footer
-        { nodes = nodes
+        { values = List.map Node.value nodes
         , body = body
         }
 
@@ -32,7 +33,7 @@ footerFunction nodes body =
 headerFunction : List Node -> String -> HeaderFooter
 headerFunction nodes body =
     Header
-        { nodes = nodes
+        { values = List.map Node.value nodes
         , body = body
         }
 

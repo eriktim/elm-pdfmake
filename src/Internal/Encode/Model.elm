@@ -39,8 +39,8 @@ headerFooter hf =
                     fn
 
         nodes =
-            function.nodes
-                |> List.map (stringify << Node.value)
+            function.values
+                |> List.map stringify
                 |> List.indexedMap (\index value -> "const $node" ++ (toString <| index + 1) ++ " = " ++ value ++ ";")
                 |> String.join " "
     in
