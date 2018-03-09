@@ -21,7 +21,7 @@ attrValue attr =
         ColSpan value ->
             ( "colSpan", int value )
 
-        FillColor color ->
+        CellColor color ->
             ( "fillColor", Color.value color )
 
         RowSpan value ->
@@ -33,6 +33,9 @@ layoutValue layout =
     case layout of
         DefaultBorder value ->
             ( "defaultBorder", bool value )
+
+        FillColor function ->
+            ( "fillColor", fn function.body )
 
         LineWidthHorizontal width ->
             case width of

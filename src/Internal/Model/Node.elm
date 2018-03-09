@@ -56,7 +56,7 @@ type TableAttribute
     = Alignment TextAlignment
     | Border ( Bool, Bool, Bool, Bool )
     | ColSpan Int
-    | FillColor Color.Color
+    | CellColor Color.Color
     | RowSpan Int
 
 

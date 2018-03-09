@@ -1,6 +1,7 @@
 module Internal.Model.Function
     exposing
-        ( HeaderFooter(..)
+        ( Function
+        , HeaderFooter(..)
         , LineColor(..)
         , LineWidth(..)
         , Padding(..)

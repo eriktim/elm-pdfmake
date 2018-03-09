@@ -4,7 +4,7 @@ module Internal.Model.Table
         , Width(..)
         )
 
-import Internal.Model.Function exposing (LineColor, LineWidth, Padding)
+import Internal.Model.Function exposing (Function, LineColor, LineWidth, Padding)
 
 
 type Width
@@ -15,6 +15,7 @@ type Width
 
 type Layout
     = DefaultBorder Bool
+    | FillColor Function
     | LineWidthHorizontal LineWidth
     | LineWidthVertical LineWidth
     | LineColorHorizontal LineColor

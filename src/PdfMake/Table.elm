@@ -86,11 +86,17 @@ fillWidth =
     Fill
 
 
-fillColor : Color.Color -> TableAttribute
-fillColor =
-    FillColor
+cellColor : Color.Color -> TableAttribute
+cellColor =
+    CellColor
 
 
+fillColor : String -> Layout
+fillColor body =
+    FillColor 
+            { values = []
+            , body = body
+            }
 lineColorHorizontal : String -> Layout
 lineColorHorizontal body =
     LineColorHorizontal <|
