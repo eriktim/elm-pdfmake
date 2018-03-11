@@ -1,48 +1,36 @@
 module PdfMake.Function
     exposing
-        ( HeaderFooter
-        , currentPageArg
+        ( Footer
+        , Header
         , footerFunction
         , headerFunction
-        , pageCountArg
-        , pageSizeArg
         )
 
 import Internal.Encode.Node as Node
-import Internal.Model.Function as Function exposing (HeaderFooter(..))
-import Internal.Model.Node exposing (Node)
+import Internal.Model.Node as Model exposing (Footer(..), Function(NodeFunction), Header(..), Node)
 
 
-type alias HeaderFooter =
-    Function.HeaderFooter
+type alias Header f =
+    Model.Header f
 
 
-currentPageArg : String
-currentPageArg =
-    "currentPage"
+type alias Footer f =
+    Model.Footer f
 
 
-footerFunction : List Node -> String -> HeaderFooter
-footerFunction nodes body =
-    Footer
-        { values = List.map Node.value nodes
-        , body = body
-        }
+footerFunction : f -> List (Node f) -> Footer f
+footerFunction function nodes =
+    Footer <|
+        NodeFunction
+            { args = nodes
+            , function = function
+            }
 
 
-headerFunction : List Node -> String -> HeaderFooter
-headerFunction nodes body =
-    Header
-        { values = List.map Node.value nodes
-        , body = body
-        }
-
-
-pageCountArg : String
-pageCountArg =
-    "pageCount"
-
-
-pageSizeArg : String
-pageSizeArg =
-    "pageSize"
+headerFunction : f -> List (Node f) -> Header f
+headerFunction function nodes =
+    Header <|
+        NodeFunction
+            { args = nodes
+            , function = function
+            }

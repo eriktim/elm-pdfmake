@@ -1,6 +1,6 @@
 module PdfMake.Table
     exposing
-        ( Width
+        ( TableWidth
         , align
         , autoWidth
         , border
@@ -25,15 +25,15 @@ module PdfMake.Table
 
 import Color
 import Internal.Encode exposing (dpi)
+import Internal.Encode.Color as ColorEnc
 import Internal.Encode.Node as Node
-import Internal.Model.Function exposing (LineColor(..), LineWidth(..), Padding(..))
-import Internal.Model.Node exposing (Node(TextNode), TableAttribute(..), TableCell(..))
-import Internal.Model.Table as Table exposing (Layout(..), Width(..))
+import Internal.Model.Node as Model exposing (Function(Function), LineColor(..), LineWidth(..), Node(TextNode), Padding(..), TableAttribute(..), TableCell(..), TableLayout(..), TableWidth(..))
+import Internal.Object exposing (float, list)
 import PdfMake.Page exposing (TextAlignment)
 
 
-type alias Width =
-    Table.Width
+type alias TableWidth =
+    Model.TableWidth
 
 
 align : TextAlignment -> TableAttribute
@@ -41,7 +41,7 @@ align =
     Alignment
 
 
-autoWidth : Width
+autoWidth : TableWidth
 autoWidth =
     Auto
 
@@ -51,12 +51,12 @@ border =
     Border
 
 
-cell : List TableAttribute -> Node -> TableCell
+cell : List TableAttribute -> Node f -> TableCell f
 cell =
     Cell
 
 
-cell_ : String -> TableCell
+cell_ : String -> TableCell f
 cell_ text =
     Cell [] <|
         TextNode
@@ -71,17 +71,17 @@ colSpan =
     ColSpan
 
 
-defaultBorder : Bool -> Layout
+defaultBorder : Bool -> TableLayout f
 defaultBorder =
     DefaultBorder
 
 
-emptyCell : TableCell
+emptyCell : TableCell f
 emptyCell =
     EmptyCell
 
 
-fillWidth : Width
+fillWidth : TableWidth
 fillWidth =
     Fill
 
@@ -91,82 +91,93 @@ cellColor =
     CellColor
 
 
-fillColor : String -> Layout
-fillColor body =
-    FillColor 
-            { values = []
-            , body = body
+fillColor : f -> List Color.Color -> TableLayout f
+fillColor function colors =
+    FillColor <|
+        Function
+            { args = List.map ColorEnc.value colors
+            , function = function
             }
-lineColorHorizontal : String -> Layout
-lineColorHorizontal body =
+
+
+lineColorHorizontal : f -> List Color.Color -> TableLayout f
+lineColorHorizontal function colors =
     LineColorHorizontal <|
-        LineColor
-            { values = []
-            , body = body
-            }
+        LineColor <|
+            Function
+                { args = List.map ColorEnc.value colors
+                , function = function
+                }
 
 
-lineColorVertical : String -> Layout
-lineColorVertical body =
+lineColorVertical : f -> List Color.Color -> TableLayout f
+lineColorVertical function colors =
     LineColorVertical <|
-        LineColor
-            { values = []
-            , body = body
-            }
+        LineColor <|
+            Function
+                { args = List.map ColorEnc.value colors
+                , function = function
+                }
 
 
-lineWidthHorizontal : String -> Layout
-lineWidthHorizontal body =
+lineWidthHorizontal : f -> List Float -> TableLayout f
+lineWidthHorizontal function widths =
     LineWidthHorizontal <|
-        LineWidth
-            { values = []
-            , body = body
-            }
+        LineWidth <|
+            Function
+                { args = List.map float widths
+                , function = function
+                }
 
 
-lineWidthVertical : String -> Layout
-lineWidthVertical body =
+lineWidthVertical : f -> List Float -> TableLayout f
+lineWidthVertical function widths =
     LineWidthVertical <|
-        LineWidth
-            { values = []
-            , body = body
-            }
+        LineWidth <|
+            Function
+                { args = List.map float widths
+                , function = function
+                }
 
 
-paddingBottom : String -> Layout
-paddingBottom body =
+paddingBottom : f -> List Float -> TableLayout f
+paddingBottom function paddings =
     PaddingBottom <|
-        Padding
-            { values = []
-            , body = body
-            }
+        Padding <|
+            Function
+                { args = List.map float paddings
+                , function = function
+                }
 
 
-paddingLeft : String -> Layout
-paddingLeft body =
+paddingLeft : f -> List Float -> TableLayout f
+paddingLeft function paddings =
     PaddingLeft <|
-        Padding
-            { values = []
-            , body = body
-            }
+        Padding <|
+            Function
+                { args = List.map float paddings
+                , function = function
+                }
 
 
-paddingRight : String -> Layout
-paddingRight body =
+paddingRight : f -> List Float -> TableLayout f
+paddingRight function paddings =
     PaddingRight <|
-        Padding
-            { values = []
-            , body = body
-            }
+        Padding <|
+            Function
+                { args = List.map float paddings
+                , function = function
+                }
 
 
-paddingTop : String -> Layout
-paddingTop body =
+paddingTop : f -> List Float -> TableLayout f
+paddingTop function paddings =
     PaddingTop <|
-        Padding
-            { values = []
-            , body = body
-            }
+        Padding <|
+            Function
+                { args = List.map float paddings
+                , function = function
+                }
 
 
 rowSpan : Int -> TableAttribute
@@ -174,6 +185,6 @@ rowSpan =
     RowSpan
 
 
-width : Float -> Width
+width : Float -> TableWidth
 width =
     Inch

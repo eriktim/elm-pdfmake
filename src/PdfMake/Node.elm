@@ -1,10 +1,10 @@
 module PdfMake.Node
     exposing
         ( Node
+        , TableLayout
         , columns
         , image
         , imageFit
-        , literal
         , ol
         , stack
         , table
@@ -14,17 +14,19 @@ module PdfMake.Node
         )
 
 import Internal.Model.Attribute as Attribute
-import Internal.Model.Node as Node exposing (Node(..))
+import Internal.Model.Node as Node exposing (Node(..), TableLayout, TableWidth)
 import Internal.Model.Style as Style
-import Internal.Model.Table exposing (Layout)
-import PdfMake.Table exposing (Width)
 
 
-type alias Node =
-    Node.Node
+type alias Node f =
+    Node.Node f
 
 
-columns : List Attribute.Attribute -> List Node.Node -> Node.Node
+type alias TableLayout f =
+    Node.TableLayout f
+
+
+columns : List Attribute.Attribute -> List (Node.Node f) -> Node.Node f
 columns attrs columns =
     ColumnsNode
         { columns = columns
@@ -32,7 +34,7 @@ columns attrs columns =
         }
 
 
-image : List Attribute.Attribute -> Float -> Float -> String -> Node.Node
+image : List Attribute.Attribute -> Float -> Float -> String -> Node.Node f
 image attrs width height dataUrl =
     ImageSizeNode
         { image = dataUrl
@@ -42,7 +44,7 @@ image attrs width height dataUrl =
         }
 
 
-imageFit : List Attribute.Attribute -> Float -> Float -> String -> Node.Node
+imageFit : List Attribute.Attribute -> Float -> Float -> String -> Node.Node f
 imageFit attrs width height dataUrl =
     ImageFitNode
         { image = dataUrl
@@ -52,7 +54,7 @@ imageFit attrs width height dataUrl =
         }
 
 
-ol : List Attribute.Attribute -> List Node.Node -> Node.Node
+ol : List Attribute.Attribute -> List (Node.Node f) -> Node.Node f
 ol attrs items =
     OrderedListNode
         { ol = items
@@ -60,16 +62,7 @@ ol attrs items =
         }
 
 
-literal : List Attribute.Attribute -> List Style.Attribute -> String -> Node.Node
-literal attrs style text_ =
-    LiteralNode
-        { text = text_
-        , style = style
-        , attrs = attrs
-        }
-
-
-stack : List Attribute.Attribute -> List Node.Node -> Node.Node
+stack : List Attribute.Attribute -> List (Node.Node f) -> Node.Node f
 stack attrs stack =
     StackNode
         { stack = stack
@@ -77,7 +70,7 @@ stack attrs stack =
         }
 
 
-table : List Attribute.Attribute -> List Layout -> List Width -> List (List Node.TableCell) -> List (List Node.TableCell) -> Node.Node
+table : List Attribute.Attribute -> List (TableLayout f) -> List TableWidth -> List (List (Node.TableCell f)) -> List (List (Node.TableCell f)) -> Node.Node f
 table attrs layout widths headers body =
     TableNode
         { layout = layout
@@ -88,7 +81,7 @@ table attrs layout widths headers body =
         }
 
 
-text : List Style.Attribute -> String -> Node.Node
+text : List Style.Attribute -> String -> Node.Node f
 text style text_ =
     TextNode
         { text = text_
@@ -97,7 +90,7 @@ text style text_ =
         }
 
 
-textNode : List Attribute.Attribute -> List Style.Attribute -> String -> Node.Node
+textNode : List Attribute.Attribute -> List Style.Attribute -> String -> Node.Node f
 textNode attrs style text_ =
     TextNode
         { text = text_
@@ -106,7 +99,7 @@ textNode attrs style text_ =
         }
 
 
-ul : List Attribute.Attribute -> List Node.Node -> Node.Node
+ul : List Attribute.Attribute -> List (Node.Node f) -> Node.Node f
 ul attrs items =
     UnorderedListNode
         { ul = items
