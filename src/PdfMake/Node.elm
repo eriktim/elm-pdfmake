@@ -1,6 +1,8 @@
 module PdfMake.Node
     exposing
         ( Node
+        , Table
+        , TableColumn
         , TableLayout
         , columns
         , image
@@ -20,6 +22,20 @@ import Internal.Model.Style as Style
 
 type alias Node f =
     Node.Node f
+
+
+type alias Table records f =
+    { layout : List (TableLayout f)
+    , records : List records
+    , columns : List (TableColumn records f)
+    }
+
+
+type alias TableColumn record f =
+    { header : Node.TableCell f
+    , width : TableWidth
+    , cell : record -> Node.TableCell f
+    }
 
 
 type alias TableLayout f =
@@ -70,12 +86,27 @@ stack attrs stack =
         }
 
 
-table : List Attribute.Attribute -> List (TableLayout f) -> List TableWidth -> List (List (Node.TableCell f)) -> List (List (Node.TableCell f)) -> Node.Node f
-table attrs layout widths headers body =
+table : List Attribute.Attribute -> Table records f -> Node.Node f
+table attrs table =
+    let
+        widths =
+            List.map .width table.columns
+
+        headers =
+            List.map .header table.columns
+
+        fs =
+            table.columns
+                |> List.map .cell
+
+        body =
+            table.records
+                |> List.map (\record -> List.map (\f -> f record) fs)
+    in
     TableNode
-        { layout = layout
+        { layout = table.layout
         , body = body
-        , headers = headers
+        , headers = [ headers ]
         , widths = widths
         , attrs = attrs
         }

@@ -1,6 +1,7 @@
 module PdfMake.Table
     exposing
-        ( TableWidth
+        ( TableCell
+        , TableWidth
         , align
         , autoWidth
         , border
@@ -34,6 +35,10 @@ import PdfMake.Page exposing (TextAlignment)
 
 type alias TableWidth =
     Model.TableWidth
+
+
+type alias TableCell f =
+    Model.TableCell f
 
 
 align : TextAlignment -> TableAttribute
