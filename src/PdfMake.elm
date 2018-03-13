@@ -13,18 +13,18 @@ import Internal.Object exposing (stringify)
 import PdfMake.Page exposing (PageSize(A4, LETTER))
 
 
-type PdfMake f
-    = PdfMake (Model f)
+type PdfMake f img
+    = PdfMake (Model f img)
 
 
 doc :
     PageSize
     -> ( Float, Float, Float, Float )
-    -> Maybe (Header f)
-    -> Maybe (Footer f)
+    -> Maybe (Header f img)
+    -> Maybe (Footer f img)
     -> List Style.Attribute
-    -> List (Node f)
-    -> PdfMake f
+    -> List (Node f img)
+    -> PdfMake f img
 doc pageSize margins header footer style nodes =
     PdfMake
         { pageSize = pageSize
@@ -37,8 +37,8 @@ doc pageSize margins header footer style nodes =
         }
 
 
-docDefinition : (f -> String) -> PdfMake f -> String
-docDefinition fn pdf =
+docDefinition : (f -> String) -> (img -> (String, String)) -> PdfMake f img -> String
+docDefinition fn img pdf =
     case pdf of
         PdfMake model ->
-            stringify <| Model.value fn model
+            stringify <| Model.value fn img model

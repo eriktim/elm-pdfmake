@@ -9,16 +9,16 @@ import Internal.Object exposing (Value, list, literal, object, stringify)
 import PdfMake.Page exposing (PageOrientation(..))
 
 
-value : (f -> String) -> Model f -> Value
-value fn model =
+value : (f -> String) -> (img -> (String, String)) -> Model f img -> Value
+value fn img model =
     object
         [ ( "pageSize", Page.pageSize model.pageSize )
         , ( "pageOrientation", Page.pageOrientation <| Maybe.withDefault Portrait model.pageOrientation )
         , ( "pageMargins", Page.pageMargins <| Maybe.withDefault ( 1, 1, 1, 1 ) model.pageMargins )
-        , ( "content", list <| List.map (Node.value fn) model.content )
+        , ( "content", list <| List.map (Node.value fn img) model.content )
         , ( "defaultStyle", Style.value <| Maybe.withDefault [] model.defaultStyle )
-        , ( "header", Maybe.withDefault (literal "undefined") <| Maybe.map (header fn) model.header )
-        , ( "footer", Maybe.withDefault (literal "undefined") <| Maybe.map (footer fn) model.footer )
+        , ( "header", Maybe.withDefault (literal "undefined") <| Maybe.map (header fn img) model.header )
+        , ( "footer", Maybe.withDefault (literal "undefined") <| Maybe.map (footer fn img) model.footer )
         ]
 
 
@@ -26,15 +26,15 @@ value fn model =
 -- INTERNAL
 
 
-header : (f -> String) -> Header f -> Value
-header fn header_ =
+header : (f -> String) -> (img -> (String, String)) -> Header f img -> Value
+header fn img header_ =
     case header_ of
         Header function ->
-            Node.functionValue fn function
+            Node.functionValue fn img function
 
 
-footer : (f -> String) -> Footer f -> Value
-footer fn footer_ =
+footer : (f -> String) -> (img -> (String, String)) -> Footer f img -> Value
+footer fn img footer_ =
     case footer_ of
         Footer function ->
-            Node.functionValue fn function
+            Node.functionValue fn img function

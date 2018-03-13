@@ -37,8 +37,8 @@ type alias TableWidth =
     Model.TableWidth
 
 
-type alias TableCell f =
-    Model.TableCell f
+type alias TableCell f img =
+    Model.TableCell f img
 
 
 align : TextAlignment -> TableAttribute
@@ -56,12 +56,12 @@ border =
     Border
 
 
-cell : List TableAttribute -> Node f -> TableCell f
+cell : List TableAttribute -> Node f img -> TableCell f img
 cell =
     Cell
 
 
-cell_ : String -> TableCell f
+cell_ : String -> TableCell f img
 cell_ text =
     Cell [] <|
         TextNode
@@ -81,7 +81,7 @@ defaultBorder =
     DefaultBorder
 
 
-emptyCell : TableCell f
+emptyCell : TableCell f img
 emptyCell =
     EmptyCell
 

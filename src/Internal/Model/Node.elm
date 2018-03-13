@@ -6,6 +6,7 @@ module Internal.Model.Node
         , LineColor(..)
         , LineWidth(..)
         , Node(..)
+        , NodeFunction(..)
         , Padding(..)
         , Table
         , TableAttribute(..)
@@ -21,16 +22,16 @@ import Internal.Object exposing (Value)
 import PdfMake.Page exposing (TextAlignment)
 
 
-type Node f
-    = ColumnsNode (Columns f)
-    | StackNode (Stack f)
-    | OrderedListNode (OrderedList f)
-    | UnorderedListNode (UnorderedList f)
-    | TableNode (Table f)
+type Node f img
+    = ColumnsNode (Columns f img)
+    | StackNode (Stack f img)
+    | OrderedListNode (OrderedList f img)
+    | UnorderedListNode (UnorderedList f img)
+    | TableNode (Table f img)
     | TextNode Text
     | TableOfContentsNode
-    | ImageSizeNode ImageSized
-    | ImageFitNode ImageFitted
+    | ImageSizeNode (ImageSized img)
+    | ImageFitNode (ImageFitted img)
     | CanvasNode
     | ReferenceNode
 
@@ -40,18 +41,21 @@ type Function f
         { args : List Value
         , function : f
         }
-    | NodeFunction
-        { args : List (Node f)
+
+
+type NodeFunction f img
+    = NodeFunction
+        { args : List (Node f img)
         , function : f
         }
 
 
-type Header f
-    = Header (Function f)
+type Header f img
+    = Header (NodeFunction f img)
 
 
-type Footer f
-    = Footer (Function f)
+type Footer f img
+    = Footer (NodeFunction f img)
 
 
 type LineWidth f
@@ -85,26 +89,26 @@ type TableLayout f
     | PaddingTop (Padding f)
 
 
-type alias Columns f =
-    { columns : List (Node f)
+type alias Columns f img =
+    { columns : List (Node f img)
     , attrs : List Attribute
     }
 
 
-type alias Stack f =
-    { stack : List (Node f)
+type alias Stack f img =
+    { stack : List (Node f img)
     , attrs : List Attribute
     }
 
 
-type alias OrderedList f =
-    { ol : List (Node f)
+type alias OrderedList f img =
+    { ol : List (Node f img)
     , attrs : List Attribute
     }
 
 
-type alias UnorderedList f =
-    { ul : List (Node f)
+type alias UnorderedList f img =
+    { ul : List (Node f img)
     , attrs : List Attribute
     }
 
@@ -117,15 +121,15 @@ type TableAttribute
     | RowSpan Int
 
 
-type TableCell f
-    = Cell (List TableAttribute) (Node f)
+type TableCell f img
+    = Cell (List TableAttribute) (Node f img)
     | EmptyCell
 
 
-type alias Table f =
+type alias Table f img =
     { layout : List (TableLayout f)
-    , body : List (List (TableCell f))
-    , headers : List (List (TableCell f))
+    , body : List (List (TableCell f img))
+    , headers : List (List (TableCell f img))
     , widths : List TableWidth
     , attrs : List Attribute
     }
@@ -138,16 +142,16 @@ type alias Text =
     }
 
 
-type alias ImageSized =
-    { image : String
+type alias ImageSized img =
+    { image : img
     , width : Float -- TODO Maybe
     , height : Float -- TODO Maybe
     , attrs : List Attribute
     }
 
 
-type alias ImageFitted =
-    { image : String
+type alias ImageFitted img =
+    { image : img
     , width : Float
     , height : Float
     , attrs : List Attribute

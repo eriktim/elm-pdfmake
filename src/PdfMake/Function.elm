@@ -7,18 +7,18 @@ module PdfMake.Function
         )
 
 import Internal.Encode.Node as Node
-import Internal.Model.Node as Model exposing (Footer(..), Function(NodeFunction), Header(..), Node)
+import Internal.Model.Node as Model exposing (Footer(..), NodeFunction(NodeFunction), Header(..), Node)
 
 
-type alias Header f =
-    Model.Header f
+type alias Header f img =
+    Model.Header f img
 
 
-type alias Footer f =
-    Model.Footer f
+type alias Footer f img =
+    Model.Footer f img
 
 
-footerFunction : f -> List (Node f) -> Footer f
+footerFunction : f -> List (Node f img) -> Footer f img
 footerFunction function nodes =
     Footer <|
         NodeFunction
@@ -27,7 +27,7 @@ footerFunction function nodes =
             }
 
 
-headerFunction : f -> List (Node f) -> Header f
+headerFunction : f -> List (Node f img) -> Header f img
 headerFunction function nodes =
     Header <|
         NodeFunction

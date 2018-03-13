@@ -5,54 +5,52 @@ import Internal.Encode.Attribute as Attribute
 import Internal.Encode.Color as Color
 import Internal.Encode.Page as Page
 import Internal.Encode.Style as Style
-import Internal.Model.Node exposing (Function(..), LineColor(..), LineWidth(..), Node(..), Padding(..), TableAttribute(..), TableCell(..), TableLayout(..), TableWidth(..))
+import Internal.Model.Node exposing (Function(..), LineColor(..), LineWidth(..), Node(..), NodeFunction(..), Padding(..), TableAttribute(..), TableCell(..), TableLayout(..), TableWidth(..))
 import Internal.Object exposing (Value, bool, float, int, list, literal, object, string, stringify)
 import PdfMake.Page exposing (PageBreak(..))
 
 
-value : (f -> String) -> Node f -> Value
-value fn node =
-    object <| value_ fn node
+value : (f -> String) -> (img -> ( String, String )) -> Node f img -> Value
+value fn img node =
+    object <| value_ fn img node
 
 
-functionValue : (f -> String) -> Function f -> Value
-functionValue fn function =
-    let
-        ( func, args ) =
-            case function of
-                Function f ->
-                    ( fn f.function, f.args )
-
-                NodeFunction f ->
-                    ( fn f.function, List.map (value fn) f.args )
-
-        args_ =
-            String.join ", " <| List.map stringify args
-    in
-    literal <| func ++ "(" ++ args_ ++ ")"
+functionValue : (f -> String) -> (img -> ( String, String )) -> NodeFunction f img -> Value
+functionValue fn img function =
+    functionValue_ fn <|
+        case function of
+            NodeFunction f ->
+                let
+                    args =
+                        List.map (value fn img) f.args
+                in
+                Function
+                    { args = args
+                    , function = f.function
+                    }
 
 
 
 -- INTERNAL
 
 
-value_ : (f -> String) -> Node f -> List ( String, Value )
-value_ fn node =
+value_ : (f -> String) -> (img -> ( String, String )) -> Node f img -> List ( String, Value )
+value_ fn img node =
     case node of
         ColumnsNode columns ->
-            ( "columns", list <| List.map (value fn) columns.columns )
+            ( "columns", list <| List.map (value fn img) columns.columns )
                 :: List.concatMap Attribute.values columns.attrs
 
         StackNode stack ->
-            ( "stack", list <| List.map (value fn) stack.stack )
+            ( "stack", list <| List.map (value fn img) stack.stack )
                 :: List.concatMap Attribute.values stack.attrs
 
         OrderedListNode list_ ->
-            ( "ol", list <| List.map (value fn) list_.ol )
+            ( "ol", list <| List.map (value fn img) list_.ol )
                 :: List.concatMap Attribute.values list_.attrs
 
         UnorderedListNode list_ ->
-            ( "ul", list <| List.map (value fn) list_.ul )
+            ( "ul", list <| List.map (value fn img) list_.ul )
                 :: List.concatMap Attribute.values list_.attrs
 
         TableNode table ->
@@ -60,7 +58,7 @@ value_ fn node =
                 body =
                     table.headers
                         ++ table.body
-                        |> List.map (list << List.map (cellValue fn))
+                        |> List.map (list << List.map (cellValue fn img))
                         |> list
 
                 table_ =
@@ -84,14 +82,14 @@ value_ fn node =
             [ ( "unimplemented", string "<TableOfContentsNode>" ) ]
 
         ImageSizeNode image ->
-            [ ( "image", string image.image )
+            [ ( "image", string <| Tuple.first (img image.image) )
             , ( "width", float <| dpi image.width )
             , ( "height", float <| dpi image.height )
             ]
                 ++ List.concatMap Attribute.values image.attrs
 
         ImageFitNode image ->
-            [ ( "image", string image.image )
+            [ ( "image", string <| Tuple.first (img image.image) )
             , ( "fit", list [ float <| dpi image.width, float <| dpi image.height ] )
             ]
                 ++ List.concatMap Attribute.values image.attrs
@@ -103,11 +101,11 @@ value_ fn node =
             [ ( "unimplemented", string "<ReferenceNode>" ) ]
 
 
-cellValue : (f -> String) -> TableCell f -> Value
-cellValue fn cell =
+cellValue : (f -> String) -> (img -> ( String, String )) -> TableCell f img -> Value
+cellValue fn img cell =
     case cell of
         Cell attrs node ->
-            object <| value_ fn node ++ List.map attrValue attrs
+            object <| value_ fn img node ++ List.map attrValue attrs
 
         EmptyCell ->
             object []
@@ -139,47 +137,47 @@ layoutValue fn layout =
             ( "defaultBorder", bool value )
 
         FillColor function ->
-            ( "fillColor", functionValue fn function )
+            ( "fillColor", functionValue_ fn function )
 
         LineWidthHorizontal width ->
             case width of
                 LineWidth function ->
-                    ( "hLineWidth", functionValue fn function )
+                    ( "hLineWidth", functionValue_ fn function )
 
         LineWidthVertical width ->
             case width of
                 LineWidth function ->
-                    ( "vLineWidth", functionValue fn function )
+                    ( "vLineWidth", functionValue_ fn function )
 
         LineColorHorizontal color ->
             case color of
                 LineColor function ->
-                    ( "hLineColor", functionValue fn function )
+                    ( "hLineColor", functionValue_ fn function )
 
         LineColorVertical color ->
             case color of
                 LineColor function ->
-                    ( "vLineColor", functionValue fn function )
+                    ( "vLineColor", functionValue_ fn function )
 
         PaddingBottom padding ->
             case padding of
                 Padding function ->
-                    ( "paddingBottom", functionValue fn function )
+                    ( "paddingBottom", functionValue_ fn function )
 
         PaddingLeft padding ->
             case padding of
                 Padding function ->
-                    ( "paddingLeft", functionValue fn function )
+                    ( "paddingLeft", functionValue_ fn function )
 
         PaddingRight padding ->
             case padding of
                 Padding function ->
-                    ( "paddingRight", functionValue fn function )
+                    ( "paddingRight", functionValue_ fn function )
 
         PaddingTop padding ->
             case padding of
                 Padding function ->
-                    ( "paddingTop", functionValue fn function )
+                    ( "paddingTop", functionValue_ fn function )
 
 
 widthValue : TableWidth -> Value
@@ -193,3 +191,17 @@ widthValue width =
 
         Inch value ->
             float (dpi value)
+
+
+functionValue_ : (f -> String) -> Function f -> Value
+functionValue_ fn function =
+    let
+        ( func, args ) =
+            case function of
+                Function f ->
+                    ( fn f.function, f.args )
+
+        args_ =
+            String.join ", " <| List.map stringify args
+    in
+    literal <| func ++ "(" ++ args_ ++ ")"
