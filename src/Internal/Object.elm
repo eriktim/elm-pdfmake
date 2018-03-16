@@ -15,6 +15,7 @@ module Internal.Object
         )
 
 import Dict exposing (Dict)
+import Regex
 
 
 type Value
@@ -126,7 +127,11 @@ stringify_ indent value =
                 "[" ++ newLine ++ space2 ++ String.join ("," ++ newLine ++ space2) (List.map (stringify_ <| indent + 2) items) ++ newLine ++ space ++ "]"
 
         StringValue value ->
-            "'" ++ value ++ "'"
+            let
+                str =
+                    Regex.replace Regex.All (Regex.regex "[']") (\_ -> "\\'") value
+            in
+            "'" ++ str ++ "'"
 
         LiteralValue value ->
             value
