@@ -129,7 +129,9 @@ stringify_ indent value =
         StringValue value ->
             let
                 str =
-                    Regex.replace Regex.All (Regex.regex "[']") (\_ -> "\\'") value
+                    value
+                        |> Regex.replace Regex.All (Regex.regex "[']") (\_ -> "\\'")
+                        |> Regex.replace Regex.All (Regex.regex "[\n\x0D]") (\_ -> "")
             in
             "'" ++ str ++ "'"
 
