@@ -6,6 +6,7 @@ module PdfMake.Table
         , autoWidth
         , border
         , cell
+        , cellColor
         , cell_
         , colSpan
         , defaultBorder
