@@ -28,6 +28,7 @@ type Node f
     | UnorderedListNode (UnorderedList f)
     | TableNode (Table f)
     | TextNode Text
+    | TextArray (Texts f)
     | TableOfContentsNode
     | ImageSizeNode ImageSized
     | ImageFitNode ImageFitted
@@ -133,6 +134,13 @@ type alias Table f =
 
 type alias Text =
     { text : String
+    , style : List Style.Attribute
+    , attrs : List Attribute
+    }
+
+
+type alias Texts f =
+    { nodes : List (Node f)
     , style : List Style.Attribute
     , attrs : List Attribute
     }

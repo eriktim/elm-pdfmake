@@ -11,6 +11,7 @@ module PdfMake.Node
         , stack
         , table
         , text
+        , textArray
         , textNode
         , ul
         )
@@ -125,6 +126,15 @@ textNode : List Attribute.Attribute -> List Style.Attribute -> String -> Node.No
 textNode attrs style text_ =
     TextNode
         { text = text_
+        , style = style
+        , attrs = attrs
+        }
+
+
+textArray : List Attribute.Attribute -> List Style.Attribute -> List (Node.Node f) -> Node.Node f
+textArray attrs style nodes =
+    TextArray
+        { nodes = nodes
         , style = style
         , attrs = attrs
         }

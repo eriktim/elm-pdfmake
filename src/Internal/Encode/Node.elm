@@ -80,6 +80,11 @@ value_ fn node =
                 :: List.concatMap Attribute.values text.attrs
                 ++ Style.values text.style
 
+        TextArray texts ->
+            ( "text", list <| List.map (value fn) texts.nodes )
+                :: List.concatMap Attribute.values texts.attrs
+                ++ Style.values texts.style
+
         TableOfContentsNode ->
             [ ( "unimplemented", string "<TableOfContentsNode>" ) ]
 
