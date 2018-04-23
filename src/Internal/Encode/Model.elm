@@ -11,19 +11,29 @@ import PdfMake.Page exposing (PageOrientation(..))
 
 value : (f -> String) -> Model f -> Value
 value fn model =
-    object
-        [ ( "pageSize", Page.pageSize model.pageSize )
-        , ( "pageOrientation", Page.pageOrientation <| Maybe.withDefault Portrait model.pageOrientation )
-        , ( "pageMargins", Page.pageMargins <| Maybe.withDefault ( 1, 1, 1, 1 ) model.pageMargins )
-        , ( "content", list <| List.map (Node.value fn) model.content )
-        , ( "defaultStyle", Style.value <| Maybe.withDefault [] model.defaultStyle )
-        , ( "header", Maybe.withDefault (literal "undefined") <| Maybe.map (header fn) model.header )
-        , ( "footer", Maybe.withDefault (literal "undefined") <| Maybe.map (footer fn) model.footer )
-        ]
+    [ ( "pageSize", Page.pageSize model.pageSize )
+    , ( "pageOrientation", Page.pageOrientation <| Maybe.withDefault Portrait model.pageOrientation )
+    , ( "content", list <| List.map (Node.value fn) model.content )
+    ]
+        ++ optional "pageMargins" Page.pageMargins model.pageMargins
+        ++ optional "defaultStyle" Style.value model.defaultStyle
+        ++ optional "header" (header fn) model.header
+        ++ optional "footer" (footer fn) model.footer
+        |> object
 
 
 
 -- INTERNAL
+
+
+optional : String -> (a -> Value) -> Maybe a -> List ( String, Value )
+optional key f value =
+    case value of
+        Just value_ ->
+            [ ( key, f value_ ) ]
+
+        Nothing ->
+            []
 
 
 header : (f -> String) -> Header f -> Value

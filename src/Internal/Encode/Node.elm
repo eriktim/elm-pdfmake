@@ -69,10 +69,16 @@ value_ fn node =
                         , ( "widths", list <| List.map widthValue table.widths )
                         , ( "body", body )
                         ]
+
+                layout =
+                    if List.isEmpty table.layout then
+                        []
+                    else
+                        [ ( "layout", object <| List.map (layoutValue fn) table.layout )
+                        ]
             in
-            [ ( "table", table_ )
-            , ( "layout", object <| List.map (layoutValue fn) table.layout )
-            ]
+            ( "table", table_ )
+                :: layout
                 ++ List.concatMap Attribute.values table.attrs
 
         TextNode text ->

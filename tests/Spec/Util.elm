@@ -11,18 +11,20 @@ isEqual expected result =
     \_ -> Expect.equal (escape result) (escape expected)
 
 
-stringify : Node -> String
+stringify : Node f -> String
 stringify node =
     let
         pdf =
             doc A4
                 ( 1, 1, 1, 1 )
+                Nothing
+                Nothing
                 []
                 [ node
                 ]
 
         lines =
-            String.lines <| docDefinition pdf
+            String.lines <| docDefinition (\_ -> "") pdf
     in
     lines
         |> (List.reverse << List.drop 10 << List.reverse)

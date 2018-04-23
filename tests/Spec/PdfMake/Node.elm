@@ -6,7 +6,7 @@ import Fuzz exposing (Fuzzer, int, list, string)
 import PdfMake exposing (doc, docDefinition)
 import PdfMake.Attribute exposing (absolutePosition)
 import PdfMake.Node exposing (..)
-import PdfMake.Table exposing (autoWidth, border, cell, cell_, colSpan, fillColor, fillWidth, rowSpan, width)
+import PdfMake.Table exposing (autoWidth, border, cell, cellColor, cell_, colSpan, fillWidth, rowSpan, width)
 import Spec.Util exposing (isEqual, stringify)
 import Test exposing (..)
 
@@ -50,7 +50,7 @@ columnsSpec =
 
 
 imageSpec =
-    image [ absolutePosition 1 2 ] 123 456 "data:image"
+    image [ absolutePosition 1 2 ] 3 4 "data:image"
         |> stringify
         |> isEqual
             """
@@ -60,16 +60,16 @@ imageSpec =
                   x: 72,
                   y: 144
                 },
-                height: 456,
+                height: 288,
                 image: 'data:image',
-                width: 123
+                width: 216
               }
             ]
             """
 
 
 imageFitSpec =
-    imageFit [ absolutePosition 1 2 ] 123 456 "data:image"
+    imageFit [ absolutePosition 1 2 ] 3 4 "data:image"
         |> stringify
         |> isEqual
             """
@@ -80,8 +80,8 @@ imageFitSpec =
                   y: 144
                 },
                 fit: [
-                  123,
-                  456
+                  216,
+                  288
                 ],
                 image: 'data:image'
               }
@@ -137,16 +137,29 @@ stackSpec =
 
 tableSpec =
     let
-        attrs =
-            [ fillColor Color.blue, colSpan 1, rowSpan 1, border ( False, True, False, False ) ]
+        records =
+            [ ( cell [ cellColor Color.blue, colSpan 1, rowSpan 1, border ( False, True, False, False ) ] <| text [] "foo", cell_ "foz", cell_ "for" )
+            , ( cell_ "bar", cell_ "baz", cell_ "baa" )
+            ]
     in
     table [ absolutePosition 1 2 ]
-        [ autoWidth, fillWidth, width 12 ]
-        [ [ cell_ "header1", cell_ "header2", cell_ "header3" ]
-        ]
-        [ [ cell attrs <| text [] "foo", cell_ "foz", cell_ "for" ]
-        , [ cell_ "bar", cell_ "baz", cell_ "baa" ]
-        ]
+        { layout = []
+        , records = records
+        , columns =
+            [ { header = cell_ "header1"
+              , width = autoWidth
+              , cell = \( c, _, _ ) -> c
+              }
+            , { header = cell_ "header2"
+              , width = fillWidth
+              , cell = \( _, c, _ ) -> c
+              }
+            , { header = cell_ "header3"
+              , width = width 12
+              , cell = \( _, _, c ) -> c
+              }
+            ]
+        }
         |> stringify
         |> isEqual
             """

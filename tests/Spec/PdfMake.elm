@@ -15,13 +15,15 @@ suite =
         pdf =
             doc A4
                 ( 1, 1, 1, 1 )
+                Nothing
+                Nothing
                 []
                 [ text [] "First paragraph"
                 , text [] "Another paragraph, this time a little bit longer to make sure, this line will be divided into at least two lines"
                 ]
     in
     test "basic doc definition" <|
-        isEqual (docDefinition pdf) result
+        isEqual (docDefinition (\_ -> "") pdf) result
 
 
 result =
