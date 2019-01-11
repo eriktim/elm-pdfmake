@@ -44,5 +44,6 @@ toHex val =
     String.fromChar <|
         if val < 10 then
             Char.fromCode (48 + val)
+
         else
             Char.fromCode (87 + val)

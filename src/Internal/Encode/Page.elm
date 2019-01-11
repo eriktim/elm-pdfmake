@@ -1,10 +1,9 @@
-module Internal.Encode.Page
-    exposing
-        ( pageMargins
-        , pageOrientation
-        , pageSize
-        , textAlignment
-        )
+module Internal.Encode.Page exposing
+    ( pageMargins
+    , pageOrientation
+    , pageSize
+    , textAlignment
+    )
 
 import Internal.Encode exposing (dpi)
 import Internal.Object exposing (Value, float, list, object, string)

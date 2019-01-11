@@ -1,34 +1,33 @@
-module PdfMake.Table
-    exposing
-        ( TableCell
-        , TableWidth
-        , align
-        , autoWidth
-        , border
-        , cell
-        , cell_
-        , colSpan
-        , defaultBorder
-        , emptyCell
-        , fillColor
-        , fillWidth
-        , lineColorHorizontal
-        , lineColorVertical
-        , lineWidthHorizontal
-        , lineWidthVertical
-        , paddingBottom
-        , paddingLeft
-        , paddingRight
-        , paddingTop
-        , rowSpan
-        , width
-        )
+module PdfMake.Table exposing
+    ( TableCell
+    , TableWidth
+    , align
+    , autoWidth
+    , border
+    , cell
+    , cell_
+    , colSpan
+    , defaultBorder
+    , emptyCell
+    , fillColor
+    , fillWidth
+    , lineColorHorizontal
+    , lineColorVertical
+    , lineWidthHorizontal
+    , lineWidthVertical
+    , paddingBottom
+    , paddingLeft
+    , paddingRight
+    , paddingTop
+    , rowSpan
+    , width
+    )
 
 import Color
 import Internal.Encode exposing (dpi)
 import Internal.Encode.Color as ColorEnc
 import Internal.Encode.Node as Node
-import Internal.Model.Node as Model exposing (Function(Function), LineColor(..), LineWidth(..), Node(TextNode), Padding(..), TableAttribute(..), TableCell(..), TableLayout(..), TableWidth(..))
+import Internal.Model.Node as Model exposing (Function(..), LineColor(..), LineWidth(..), Node(..), Padding(..), TableAttribute(..), TableCell(..), TableLayout(..), TableWidth(..))
 import Internal.Object exposing (float, list)
 import PdfMake.Page exposing (TextAlignment)
 

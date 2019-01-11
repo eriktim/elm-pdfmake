@@ -1,10 +1,9 @@
-module PdfMake.Page
-    exposing
-        ( PageBreak(..)
-        , PageOrientation(..)
-        , PageSize(..)
-        , TextAlignment(..)
-        )
+module PdfMake.Page exposing
+    ( PageBreak(..)
+    , PageOrientation(..)
+    , PageSize(..)
+    , TextAlignment(..)
+    )
 
 
 type PageBreak

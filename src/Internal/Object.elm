@@ -1,18 +1,17 @@
-module Internal.Object
-    exposing
-        ( Value
-        , arg
-        , bool
-        , const
-        , float
-        , function
-        , int
-        , list
-        , literal
-        , object
-        , string
-        , stringify
-        )
+module Internal.Object exposing
+    ( Value
+    , arg
+    , bool
+    , const
+    , float
+    , function
+    , int
+    , list
+    , literal
+    , object
+    , string
+    , stringify
+    )
 
 import Dict exposing (Dict)
 import Regex
@@ -100,6 +99,7 @@ stringify_ indent value =
         ObjectValue dict ->
             if Dict.isEmpty dict then
                 "{}"
+
             else
                 let
                     space =
@@ -116,6 +116,7 @@ stringify_ indent value =
         ArrayValue items ->
             if List.isEmpty items then
                 "[]"
+
             else
                 let
                     space =
@@ -131,7 +132,7 @@ stringify_ indent value =
                 str =
                     value
                         |> Regex.replace Regex.All (Regex.regex "[']") (\_ -> "\\'")
-                        |> Regex.replace Regex.All (Regex.regex "[\n\x0D]") (\_ -> "")
+                        |> Regex.replace Regex.All (Regex.regex "[\n\u{000D}]") (\_ -> "")
             in
             "'" ++ str ++ "'"
 

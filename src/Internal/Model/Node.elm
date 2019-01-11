@@ -1,18 +1,17 @@
-module Internal.Model.Node
-    exposing
-        ( Footer(..)
-        , Function(..)
-        , Header(..)
-        , LineColor(..)
-        , LineWidth(..)
-        , Node(..)
-        , Padding(..)
-        , Table
-        , TableAttribute(..)
-        , TableCell(..)
-        , TableLayout(..)
-        , TableWidth(..)
-        )
+module Internal.Model.Node exposing
+    ( Footer(..)
+    , Function(..)
+    , Header(..)
+    , LineColor(..)
+    , LineWidth(..)
+    , Node(..)
+    , Padding(..)
+    , Table
+    , TableAttribute(..)
+    , TableCell(..)
+    , TableLayout(..)
+    , TableWidth(..)
+    )
 
 import Color
 import Internal.Model.Attribute as Attribute exposing (Attribute)

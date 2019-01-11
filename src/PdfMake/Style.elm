@@ -1,14 +1,13 @@
-module PdfMake.Style
-    exposing
-        ( Attribute
-        , alignment
-        , bold
-        , color
-        , font
-        , fontSize
-        , italic
-        , lineHeight
-        )
+module PdfMake.Style exposing
+    ( Attribute
+    , alignment
+    , bold
+    , color
+    , font
+    , fontSize
+    , italic
+    , lineHeight
+    )
 
 import Color
 import Internal.Model.Style as Style exposing (Attribute(..))

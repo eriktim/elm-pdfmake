@@ -1,10 +1,9 @@
-module PdfMake.Attribute
-    exposing
-        ( Attribute
-        , absolutePosition
-        , margins
-        , pageBreak
-        )
+module PdfMake.Attribute exposing
+    ( Attribute
+    , absolutePosition
+    , margins
+    , pageBreak
+    )
 
 import Internal.Model.Attribute as Attribute exposing (Attribute(..))
 import PdfMake.Page exposing (PageBreak)

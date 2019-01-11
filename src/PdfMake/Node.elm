@@ -1,19 +1,18 @@
-module PdfMake.Node
-    exposing
-        ( Node
-        , Table
-        , TableColumn
-        , TableLayout
-        , columns
-        , image
-        , imageFit
-        , ol
-        , stack
-        , table
-        , text
-        , textNode
-        , ul
-        )
+module PdfMake.Node exposing
+    ( Node
+    , Table
+    , TableColumn
+    , TableLayout
+    , columns
+    , image
+    , imageFit
+    , ol
+    , stack
+    , table
+    , text
+    , textNode
+    , ul
+    )
 
 import Internal.Model.Attribute as Attribute
 import Internal.Model.Node as Node exposing (Node(..), TableLayout, TableWidth)
