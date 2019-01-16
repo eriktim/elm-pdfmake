@@ -1,13 +1,12 @@
-module PdfMake.Function
-    exposing
-        ( Footer
-        , Header
-        , footerFunction
-        , headerFunction
-        )
+module PdfMake.Function exposing
+    ( Footer
+    , Header
+    , footerFunction
+    , headerFunction
+    )
 
 import Internal.Encode.Node as Node
-import Internal.Model.Node as Model exposing (Footer(..), Function(NodeFunction), Header(..), Node)
+import Internal.Model.Node as Model exposing (Footer(..), Function(..), Header(..), Node)
 
 
 type alias Header f =

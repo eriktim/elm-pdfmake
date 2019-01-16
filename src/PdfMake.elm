@@ -1,16 +1,15 @@
-module PdfMake
-    exposing
-        ( PdfMake
-        , doc
-        , docDefinition
-        )
+module PdfMake exposing
+    ( PdfMake
+    , doc
+    , docDefinition
+    )
 
 import Internal.Encode.Model as Model
 import Internal.Model exposing (Model)
 import Internal.Model.Node exposing (Footer, Header, Node)
 import Internal.Model.Style as Style
 import Internal.Object exposing (stringify)
-import PdfMake.Page exposing (PageSize(A4, LETTER))
+import PdfMake.Page exposing (PageSize(..))
 
 
 type PdfMake f
@@ -19,7 +18,7 @@ type PdfMake f
 
 doc :
     PageSize
-    -> ( Float, Float, Float, Float )
+    -> { left : Float, top : Float, right : Float, bottom : Float }
     -> Maybe (Header f)
     -> Maybe (Footer f)
     -> List Style.Attribute

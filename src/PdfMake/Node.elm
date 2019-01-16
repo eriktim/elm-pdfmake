@@ -1,20 +1,19 @@
-module PdfMake.Node
-    exposing
-        ( Node
-        , Table
-        , TableColumn
-        , TableLayout
-        , columns
-        , image
-        , imageFit
-        , ol
-        , stack
-        , table
-        , text
-        , textArray
-        , textNode
-        , ul
-        )
+module PdfMake.Node exposing
+    ( Node
+    , Table
+    , TableColumn
+    , TableLayout
+    , columns
+    , image
+    , imageFit
+    , ol
+    , stack
+    , table
+    , text
+    , textArray
+    , textNode
+    , ul
+    )
 
 import Internal.Model.Attribute as Attribute
 import Internal.Model.Node as Node exposing (Node(..), TableLayout, TableWidth)
@@ -44,9 +43,9 @@ type alias TableLayout f =
 
 
 columns : List Attribute.Attribute -> List (Node.Node f) -> Node.Node f
-columns attrs columns =
+columns attrs columns_ =
     ColumnsNode
-        { columns = columns
+        { columns = columns_
         , attrs = attrs
         }
 
@@ -80,32 +79,32 @@ ol attrs items =
 
 
 stack : List Attribute.Attribute -> List (Node.Node f) -> Node.Node f
-stack attrs stack =
+stack attrs stack_ =
     StackNode
-        { stack = stack
+        { stack = stack_
         , attrs = attrs
         }
 
 
 table : List Attribute.Attribute -> Table records f -> Node.Node f
-table attrs table =
+table attrs table_ =
     let
         widths =
-            List.map .width table.columns
+            List.map .width table_.columns
 
         headers =
-            List.map .header table.columns
+            List.map .header table_.columns
 
         fs =
-            table.columns
+            table_.columns
                 |> List.map .cell
 
         body =
-            table.records
+            table_.records
                 |> List.map (\record -> List.map (\f -> f record) fs)
     in
     TableNode
-        { layout = table.layout
+        { layout = table_.layout
         , body = body
         , headers = [ headers ]
         , widths = widths

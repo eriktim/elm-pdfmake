@@ -1,10 +1,9 @@
-module Internal.Encode.Page
-    exposing
-        ( pageMargins
-        , pageOrientation
-        , pageSize
-        , textAlignment
-        )
+module Internal.Encode.Page exposing
+    ( pageMargins
+    , pageOrientation
+    , pageSize
+    , textAlignment
+    )
 
 import Internal.Encode exposing (dpi)
 import Internal.Object exposing (Value, float, list, object, string)
@@ -22,9 +21,9 @@ pageOrientation orientation =
                 "portrait"
 
 
-pageMargins : ( Float, Float, Float, Float ) -> Value
-pageMargins ( l, t, r, b ) =
-    list <| List.map (float << dpi) [ l, t, r, b ]
+pageMargins : { left : Float, top : Float, right : Float, bottom : Float } -> Value
+pageMargins { left, top, right, bottom } =
+    list <| List.map (float << dpi) [ left, top, right, bottom ]
 
 
 pageSize : PageSize -> Value

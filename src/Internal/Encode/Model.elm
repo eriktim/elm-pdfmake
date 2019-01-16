@@ -14,7 +14,7 @@ value fn model =
     object
         [ ( "pageSize", Page.pageSize model.pageSize )
         , ( "pageOrientation", Page.pageOrientation <| Maybe.withDefault Portrait model.pageOrientation )
-        , ( "pageMargins", Page.pageMargins <| Maybe.withDefault ( 1, 1, 1, 1 ) model.pageMargins )
+        , ( "pageMargins", Page.pageMargins <| Maybe.withDefault { left = 1, top = 1, right = 1, bottom = 1 } model.pageMargins )
         , ( "content", list <| List.map (Node.value fn) model.content )
         , ( "defaultStyle", Style.value <| Maybe.withDefault [] model.defaultStyle )
         , ( "header", Maybe.withDefault (literal "undefined") <| Maybe.map (header fn) model.header )

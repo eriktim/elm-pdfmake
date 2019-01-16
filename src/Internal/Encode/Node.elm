@@ -121,27 +121,27 @@ cellValue fn cell =
 attrValue : TableAttribute -> ( String, Value )
 attrValue attr =
     case attr of
-        Alignment value ->
-            ( "alignment", Page.textAlignment value )
+        Alignment v ->
+            ( "alignment", Page.textAlignment v )
 
-        Border ( left, top, right, bottom ) ->
+        Border { left, top, right, bottom } ->
             ( "border", list <| List.map bool [ left, top, right, bottom ] )
 
-        ColSpan value ->
-            ( "colSpan", int value )
+        ColSpan v ->
+            ( "colSpan", int v )
 
         CellColor color ->
             ( "fillColor", Color.value color )
 
-        RowSpan value ->
-            ( "rowSpan", int value )
+        RowSpan v ->
+            ( "rowSpan", int v )
 
 
 layoutValue : (f -> String) -> TableLayout f -> ( String, Value )
 layoutValue fn layout =
     case layout of
-        DefaultBorder value ->
-            ( "defaultBorder", bool value )
+        DefaultBorder v ->
+            ( "defaultBorder", bool v )
 
         FillColor function ->
             ( "fillColor", functionValue fn function )
@@ -196,5 +196,5 @@ widthValue width =
         Fill ->
             string "*"
 
-        Inch value ->
-            float (dpi value)
+        Inch v ->
+            float (dpi v)

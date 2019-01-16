@@ -9,16 +9,19 @@ value : Color.Color -> Value
 value color =
     let
         rgb =
-            Color.toRgb color
+            Color.toRgba color
+
+        int =
+            floor << (*) 255
 
         r =
-            componentToHex rgb.red
+            componentToHex <| int rgb.red
 
         g =
-            componentToHex rgb.green
+            componentToHex <| int rgb.green
 
         b =
-            componentToHex rgb.blue
+            componentToHex <| int rgb.blue
     in
     string <| "#" ++ r ++ g ++ b
 
@@ -44,5 +47,6 @@ toHex val =
     String.fromChar <|
         if val < 10 then
             Char.fromCode (48 + val)
+
         else
             Char.fromCode (87 + val)

@@ -1,18 +1,17 @@
-module Internal.Object
-    exposing
-        ( Value
-        , arg
-        , bool
-        , const
-        , float
-        , function
-        , int
-        , list
-        , literal
-        , object
-        , string
-        , stringify
-        )
+module Internal.Object exposing
+    ( Value
+    , arg
+    , bool
+    , const
+    , float
+    , function
+    , int
+    , list
+    , literal
+    , object
+    , string
+    , stringify
+    )
 
 import Dict exposing (Dict)
 import Regex
@@ -100,6 +99,7 @@ stringify_ indent value =
         ObjectValue dict ->
             if Dict.isEmpty dict then
                 "{}"
+
             else
                 let
                     space =
@@ -116,6 +116,7 @@ stringify_ indent value =
         ArrayValue items ->
             if List.isEmpty items then
                 "[]"
+
             else
                 let
                     space =
@@ -126,26 +127,26 @@ stringify_ indent value =
                 in
                 "[" ++ newLine ++ space2 ++ String.join ("," ++ newLine ++ space2) (List.map (stringify_ <| indent + 2) items) ++ newLine ++ space ++ "]"
 
-        StringValue value ->
+        StringValue v ->
             let
                 str =
-                    value
-                        |> Regex.replace Regex.All (Regex.regex "[']") (\_ -> "\\'")
-                        |> Regex.replace Regex.All (Regex.regex "[\n\x0D]") (\_ -> "")
+                    v
+                        |> Regex.replace (Maybe.withDefault Regex.never <| Regex.fromString "[']") (\_ -> "\\'")
+                        |> Regex.replace (Maybe.withDefault Regex.never <| Regex.fromString "[\n\u{000D}]") (\_ -> "")
             in
             "'" ++ str ++ "'"
 
-        LiteralValue value ->
-            value
+        LiteralValue v ->
+            v
 
-        IntValue value ->
-            toString value
+        IntValue v ->
+            String.fromInt v
 
-        FloatValue value ->
-            toString value
+        FloatValue v ->
+            String.fromFloat v
 
-        BoolValue value ->
-            case value of
+        BoolValue v ->
+            case v of
                 True ->
                     "true"
 

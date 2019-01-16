@@ -1,18 +1,17 @@
-module Internal.Model.Node
-    exposing
-        ( Footer(..)
-        , Function(..)
-        , Header(..)
-        , LineColor(..)
-        , LineWidth(..)
-        , Node(..)
-        , Padding(..)
-        , Table
-        , TableAttribute(..)
-        , TableCell(..)
-        , TableLayout(..)
-        , TableWidth(..)
-        )
+module Internal.Model.Node exposing
+    ( Footer(..)
+    , Function(..)
+    , Header(..)
+    , LineColor(..)
+    , LineWidth(..)
+    , Node(..)
+    , Padding(..)
+    , Table
+    , TableAttribute(..)
+    , TableCell(..)
+    , TableLayout(..)
+    , TableWidth(..)
+    )
 
 import Color
 import Internal.Model.Attribute as Attribute exposing (Attribute)
@@ -112,7 +111,7 @@ type alias UnorderedList f =
 
 type TableAttribute
     = Alignment TextAlignment
-    | Border ( Bool, Bool, Bool, Bool )
+    | Border { left : Bool, top : Bool, right : Bool, bottom : Bool }
     | ColSpan Int
     | CellColor Color.Color
     | RowSpan Int

@@ -10,7 +10,7 @@ type alias Model f =
     { pageSize : PageSize
     , content : List (Node f)
     , pageOrientation : Maybe PageOrientation
-    , pageMargins : Maybe ( Float, Float, Float, Float )
+    , pageMargins : Maybe { left : Float, top : Float, right : Float, bottom : Float }
     , defaultStyle : Maybe (List Attribute)
     , header : Maybe (Header f)
     , footer : Maybe (Footer f)
