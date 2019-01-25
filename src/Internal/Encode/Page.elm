@@ -192,7 +192,7 @@ textAlignment alignment =
                 "right"
 
             Centered ->
-                "centered"
+                "center"
 
             Justified ->
                 "justified"
