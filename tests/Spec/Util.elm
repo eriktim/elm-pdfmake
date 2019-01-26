@@ -3,7 +3,7 @@ module Spec.Util exposing (isEqual, stringify)
 import Expect exposing (Expectation)
 import PdfMake exposing (doc, docDefinition)
 import PdfMake.Node exposing (Node)
-import PdfMake.Page exposing (PageSize(A4))
+import PdfMake.Page exposing (PageSize(..))
 
 
 isEqual : String -> String -> (() -> Expectation)
@@ -11,7 +11,7 @@ isEqual expected result =
     \_ -> Expect.equal (escape result) (escape expected)
 
 
-stringify : Node -> String
+stringify : Node a -> String
 stringify node =
     let
         pdf =

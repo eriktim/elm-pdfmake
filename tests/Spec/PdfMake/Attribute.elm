@@ -1,6 +1,5 @@
 module Spec.PdfMake.Attribute exposing (suite)
 
-import Color
 import Expect exposing (Expectation)
 import Fuzz exposing (Fuzzer, int, list, string)
 import PdfMake exposing (doc, docDefinition)
