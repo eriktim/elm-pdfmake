@@ -1,43 +1,44 @@
 module PdfMake exposing
     ( PdfMake
     , doc
-    , docDefinition
+    , encode
     )
 
+import Dict
 import Internal.Encode.Model as Model
 import Internal.Model exposing (Model)
 import Internal.Model.Node exposing (Footer, Header, Node)
 import Internal.Model.Style as Style
-import Internal.Object exposing (stringify)
+import Json.Encode as Encode
 import PdfMake.Page exposing (PageSize(..))
 
 
-type PdfMake f
-    = PdfMake (Model f)
+type PdfMake
+    = PdfMake Model
 
 
 doc :
     PageSize
     -> { left : Float, top : Float, right : Float, bottom : Float }
-    -> Maybe (Header f)
-    -> Maybe (Footer f)
-    -> List Style.Attribute
-    -> List (Node f)
-    -> PdfMake f
-doc pageSize margins header footer style nodes =
+    -> Maybe Header
+    -> Maybe Footer
+    -> Style.Style
+    -> Dict.Dict String Style.Style
+    -> List Node
+    -> PdfMake
+doc pageSize margins header footer style styles nodes =
     PdfMake
         { pageSize = pageSize
         , content = nodes
         , pageOrientation = Nothing
         , pageMargins = Just margins
         , defaultStyle = Just style
+        , styles = styles
         , header = header
         , footer = footer
         }
 
 
-docDefinition : (f -> String) -> PdfMake f -> String
-docDefinition fn pdf =
-    case pdf of
-        PdfMake model ->
-            stringify <| Model.value fn model
+encode : PdfMake -> Encode.Value
+encode (PdfMake model) =
+    Model.encode model

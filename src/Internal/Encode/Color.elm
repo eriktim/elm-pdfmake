@@ -1,12 +1,12 @@
-module Internal.Encode.Color exposing (value)
+module Internal.Encode.Color exposing (encode)
 
 import Char
 import Color
-import Internal.Object exposing (Value, string)
+import Json.Encode as Encode
 
 
-value : Color.Color -> Value
-value color =
+encode : Color.Color -> Encode.Value
+encode color =
     let
         rgb =
             Color.toRgba color
@@ -23,7 +23,7 @@ value color =
         b =
             componentToHex <| int rgb.blue
     in
-    string <| "#" ++ r ++ g ++ b
+    Encode.string <| "#" ++ r ++ g ++ b
 
 
 

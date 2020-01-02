@@ -1,18 +1,18 @@
 module Internal.Encode.Page exposing
-    ( pageMargins
-    , pageOrientation
-    , pageSize
-    , textAlignment
+    ( encodePageMargins
+    , encodePageOrientation
+    , encodePageSize
+    , encodeTextAlignment
     )
 
 import Internal.Encode exposing (dpi)
-import Internal.Object exposing (Value, float, list, object, string)
+import Json.Encode as Encode
 import PdfMake.Page exposing (PageOrientation(..), PageSize(..), TextAlignment(..))
 
 
-pageOrientation : PageOrientation -> Value
-pageOrientation orientation =
-    string <|
+encodePageOrientation : PageOrientation -> Encode.Value
+encodePageOrientation orientation =
+    Encode.string <|
         case orientation of
             Landscape ->
                 "landscape"
@@ -21,14 +21,14 @@ pageOrientation orientation =
                 "portrait"
 
 
-pageMargins : { left : Float, top : Float, right : Float, bottom : Float } -> Value
-pageMargins { left, top, right, bottom } =
-    list <| List.map (float << dpi) [ left, top, right, bottom ]
+encodePageMargins : { left : Float, top : Float, right : Float, bottom : Float } -> Encode.Value
+encodePageMargins { left, top, right, bottom } =
+    Encode.list (Encode.float << dpi) [ left, top, right, bottom ]
 
 
-pageSize : PageSize -> Value
-pageSize size =
-    string <|
+encodePageSize : PageSize -> Encode.Value
+encodePageSize size =
+    Encode.string <|
         case size of
             A0x4 ->
                 "4A0"
@@ -181,9 +181,9 @@ pageSize size =
                 "TABLOID"
 
 
-textAlignment : TextAlignment -> Value
-textAlignment alignment =
-    string <|
+encodeTextAlignment : TextAlignment -> Encode.Value
+encodeTextAlignment alignment =
+    Encode.string <|
         case alignment of
             Left ->
                 "left"

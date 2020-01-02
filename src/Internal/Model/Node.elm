@@ -11,7 +11,6 @@ module Internal.Model.Node exposing
 import Color
 import Internal.Model.Attribute as Attribute exposing (Attribute)
 import Internal.Model.Style as Style
-import Internal.Object exposing (Value)
 import PdfMake.Page exposing (TextAlignment)
 
 

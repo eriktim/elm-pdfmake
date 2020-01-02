@@ -1,37 +1,37 @@
-module Internal.Encode.Attribute exposing (values)
+module Internal.Encode.Attribute exposing (encode)
 
 import Internal.Encode exposing (dpi)
 import Internal.Encode.Style as Style
 import Internal.Model.Attribute exposing (Attribute(..))
-import Internal.Object exposing (Value, float, list, object, string)
+import Json.Encode as Encode
 import PdfMake.Page exposing (PageBreak(..))
 
 
-values : Attribute -> List ( String, Value )
-values attr =
+encode : Attribute -> List ( String, Encode.Value )
+encode attr =
     case attr of
         AbsolutePosition pos ->
             [ ( "absolutePosition"
-              , object
-                    [ ( "x", float <| dpi pos.x )
-                    , ( "y", float <| dpi pos.y )
+              , Encode.object
+                    [ ( "x", Encode.float <| dpi pos.x )
+                    , ( "y", Encode.float <| dpi pos.y )
                     ]
               )
             ]
 
         Margins margins ->
-            [ ( "margin", list <| List.map (float << dpi) [ margins.left, margins.top, margins.right, margins.bottom ] ) ]
+            [ ( "margin", Encode.list (Encode.float << dpi) [ margins.left, margins.top, margins.right, margins.bottom ] ) ]
 
         PageBreak break ->
-            [ ( "pageBreak", pageBreak break ) ]
+            [ ( "pageBreak", encodePageBreak break ) ]
 
         Style style ->
             Style.values style
 
 
-pageBreak : PageBreak -> Value
-pageBreak break =
-    string <|
+encodePageBreak : PageBreak -> Encode.Value
+encodePageBreak break =
+    Encode.string <|
         case break of
             Before ->
                 "before"

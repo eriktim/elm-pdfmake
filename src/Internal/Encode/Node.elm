@@ -1,4 +1,4 @@
-module Internal.Encode.Node exposing (value)
+module Internal.Encode.Node exposing (encode)
 
 import Internal.Encode exposing (dpi)
 import Internal.Encode.Attribute as Attribute
@@ -6,135 +6,134 @@ import Internal.Encode.Color as Color
 import Internal.Encode.Page as Page
 import Internal.Encode.Style as Style
 import Internal.Model.Node exposing (Node(..), TableAttribute(..), TableCell(..), TableWidth(..))
-import Internal.Object exposing (Value, bool, float, int, list, literal, object, string, stringify)
+import Json.Encode as Encode
 import PdfMake.Page exposing (PageBreak(..))
 
 
-value : Node -> Value
-value node =
-    object <| value_ node
+encode : Node -> Encode.Value
+encode node =
+    Encode.object <| value_ node
 
 
 
 -- INTERNAL
 
 
-value_ : Node -> List ( String, Value )
+value_ : Node -> List ( String, Encode.Value )
 value_ node =
     case node of
         ColumnsNode columns ->
-            ( "columns", list <| List.map value columns.columns )
-                :: List.concatMap Attribute.values columns.attrs
+            ( "columns", Encode.list encode columns.columns )
+                :: List.concatMap Attribute.encode columns.attrs
 
         StackNode stack ->
-            ( "stack", list <| List.map value stack.stack )
-                :: List.concatMap Attribute.values stack.attrs
+            ( "stack", Encode.list encode stack.stack )
+                :: List.concatMap Attribute.encode stack.attrs
 
         OrderedListNode list_ ->
-            ( "ol", list <| List.map value list_.ol )
-                :: List.concatMap Attribute.values list_.attrs
+            ( "ol", Encode.list encode list_.ol )
+                :: List.concatMap Attribute.encode list_.attrs
 
         UnorderedListNode list_ ->
-            ( "ul", list <| List.map value list_.ul )
-                :: List.concatMap Attribute.values list_.attrs
+            ( "ul", Encode.list encode list_.ul )
+                :: List.concatMap Attribute.encode list_.attrs
 
         TableNode table ->
             let
                 body =
                     table.headers
                         ++ table.body
-                        |> List.map (list << List.map cellValue)
-                        |> list
+                        |> Encode.list (Encode.list cellValue)
 
                 table_ =
-                    object
-                        [ ( "headerRows", int <| List.length table.headers )
-                        , ( "widths", list <| List.map widthValue table.widths )
+                    Encode.object
+                        [ ( "headerRows", Encode.int <| List.length table.headers )
+                        , ( "widths", Encode.list widthValue table.widths )
                         , ( "body", body )
                         ]
 
                 layout =
                     case table.layout of
                         Just layout_ ->
-                            [ ( "layout", string layout_ ) ]
+                            [ ( "layout", Encode.string layout_ ) ]
 
                         Nothing ->
                             []
             in
             ( "table", table_ )
                 :: layout
-                ++ List.concatMap Attribute.values table.attrs
+                ++ List.concatMap Attribute.encode table.attrs
 
         TextNode text ->
-            ( "text", string text.text )
-                :: List.concatMap Attribute.values text.attrs
+            ( "text", Encode.string text.text )
+                :: List.concatMap Attribute.encode text.attrs
                 ++ Style.values text.style
 
         TextArray texts ->
-            ( "text", list <| List.map value texts.nodes )
-                :: List.concatMap Attribute.values texts.attrs
+            ( "text", Encode.list encode texts.nodes )
+                :: List.concatMap Attribute.encode texts.attrs
                 ++ Style.values texts.style
 
         TableOfContentsNode ->
-            [ ( "unimplemented", string "<TableOfContentsNode>" ) ]
+            [ ( "unimplemented", Encode.string "<TableOfContentsNode>" ) ]
 
         ImageSizeNode image ->
-            [ ( "image", string image.image )
-            , ( "width", float <| dpi image.width )
-            , ( "height", float <| dpi image.height )
+            [ ( "image", Encode.string image.image )
+            , ( "width", Encode.float <| dpi image.width )
+            , ( "height", Encode.float <| dpi image.height )
             ]
-                ++ List.concatMap Attribute.values image.attrs
+                ++ List.concatMap Attribute.encode image.attrs
 
         ImageFitNode image ->
-            [ ( "image", string image.image )
-            , ( "fit", list [ float <| dpi image.width, float <| dpi image.height ] )
+            [ ( "image", Encode.string image.image )
+            , ( "fit", Encode.list identity [ Encode.float <| dpi image.width, Encode.float <| dpi image.height ] )
             ]
-                ++ List.concatMap Attribute.values image.attrs
+                ++ List.concatMap Attribute.encode image.attrs
 
         CanvasNode ->
-            [ ( "unimplemented", string "<CanvasNode>" ) ]
+            [ ( "unimplemented", Encode.string "<CanvasNode>" ) ]
 
         ReferenceNode ->
-            [ ( "unimplemented", string "<ReferenceNode>" ) ]
+            [ ( "unimplemented", Encode.string "<ReferenceNode>" ) ]
 
 
-cellValue : TableCell -> Value
+cellValue : TableCell -> Encode.Value
 cellValue cell =
     case cell of
         Cell attrs node ->
-            object <| value_ node ++ List.map attrValue attrs
+            Encode.object <| value_ node ++ List.map attrValue attrs
 
         EmptyCell ->
-            object []
+            Encode.object []
 
 
-attrValue : TableAttribute -> ( String, Value )
+attrValue : TableAttribute -> ( String, Encode.Value )
 attrValue attr =
     case attr of
         Alignment v ->
-            ( "alignment", Page.textAlignment v )
+            ( "alignment", Page.encodeTextAlignment v )
 
         Border { left, top, right, bottom } ->
-            ( "border", list <| List.map bool [ left, top, right, bottom ] )
+            ( "border", Encode.list Encode.bool [ left, top, right, bottom ] )
 
         ColSpan v ->
-            ( "colSpan", int v )
+            ( "colSpan", Encode.int v )
 
         CellColor color ->
-            ( "fillColor", Color.value color )
+            ( "fillColor", Color.encode color )
 
         RowSpan v ->
-            ( "rowSpan", int v )
+            ( "rowSpan", Encode.int v )
 
 
-widthValue : TableWidth -> Value
+widthValue : TableWidth -> Encode.Value
 widthValue width =
     case width of
         Auto ->
-            string "auto"
+            Encode.string "auto"
 
         Fill ->
-            string "*"
+            Encode.string "*"
 
         Inch v ->
-            float (dpi v)
+            Encode.float (dpi v)

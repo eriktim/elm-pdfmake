@@ -19,7 +19,6 @@ import Internal.Encode exposing (dpi)
 import Internal.Encode.Color as ColorEnc
 import Internal.Encode.Node as Node
 import Internal.Model.Node as Model exposing (Node(..), TableAttribute(..), TableCell(..), TableWidth(..))
-import Internal.Object exposing (float, list)
 import PdfMake.Page exposing (TextAlignment)
 
 
