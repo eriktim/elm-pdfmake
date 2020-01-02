@@ -2,8 +2,9 @@ module PdfMake.Node exposing
     ( Node
     , Table
     , TableColumn
-    , TableLayout
     , columns
+    , footer
+    , header
     , image
     , imageFit
     , ol
@@ -16,33 +17,39 @@ module PdfMake.Node exposing
     )
 
 import Internal.Model.Attribute as Attribute
-import Internal.Model.Node as Node exposing (Node(..), TableLayout, TableWidth)
+import Internal.Model.Node as Node exposing (Node(..), TableWidth)
 import Internal.Model.Style as Style
 
 
-type alias Node f =
-    Node.Node f
+type alias Node =
+    Node.Node
 
 
-type alias Table records f =
-    { layout : List (TableLayout f)
-    , records : List records
-    , columns : List (TableColumn records f)
+type alias Table record =
+    { layout : Maybe String
+    , records : List record
+    , columns : List (TableColumn record)
     }
 
 
-type alias TableColumn record f =
-    { header : Node.TableCell f
+type alias TableColumn record =
+    { header : Node.TableCell
     , width : TableWidth
-    , cell : record -> Node.TableCell f
+    , cell : record -> Node.TableCell
     }
 
 
-type alias TableLayout f =
-    Node.TableLayout f
+header : Node.Node -> Node.Header
+header =
+    Node.Header
 
 
-columns : List Attribute.Attribute -> List (Node.Node f) -> Node.Node f
+footer : Node.Node -> Node.Footer
+footer =
+    Node.Footer
+
+
+columns : List Attribute.Attribute -> List Node.Node -> Node.Node
 columns attrs columns_ =
     ColumnsNode
         { columns = columns_
@@ -50,7 +57,7 @@ columns attrs columns_ =
         }
 
 
-image : List Attribute.Attribute -> Float -> Float -> String -> Node.Node f
+image : List Attribute.Attribute -> Float -> Float -> String -> Node.Node
 image attrs width height dataUrl =
     ImageSizeNode
         { image = dataUrl
@@ -60,7 +67,7 @@ image attrs width height dataUrl =
         }
 
 
-imageFit : List Attribute.Attribute -> Float -> Float -> String -> Node.Node f
+imageFit : List Attribute.Attribute -> Float -> Float -> String -> Node.Node
 imageFit attrs width height dataUrl =
     ImageFitNode
         { image = dataUrl
@@ -70,7 +77,7 @@ imageFit attrs width height dataUrl =
         }
 
 
-ol : List Attribute.Attribute -> List (Node.Node f) -> Node.Node f
+ol : List Attribute.Attribute -> List Node.Node -> Node.Node
 ol attrs items =
     OrderedListNode
         { ol = items
@@ -78,7 +85,7 @@ ol attrs items =
         }
 
 
-stack : List Attribute.Attribute -> List (Node.Node f) -> Node.Node f
+stack : List Attribute.Attribute -> List Node.Node -> Node.Node
 stack attrs stack_ =
     StackNode
         { stack = stack_
@@ -86,7 +93,7 @@ stack attrs stack_ =
         }
 
 
-table : List Attribute.Attribute -> Table records f -> Node.Node f
+table : List Attribute.Attribute -> Table records -> Node.Node
 table attrs table_ =
     let
         widths =
@@ -112,7 +119,7 @@ table attrs table_ =
         }
 
 
-text : List Style.Attribute -> String -> Node.Node f
+text : List Style.Attribute -> String -> Node.Node
 text style text_ =
     TextNode
         { text = text_
@@ -121,7 +128,7 @@ text style text_ =
         }
 
 
-textNode : List Attribute.Attribute -> List Style.Attribute -> String -> Node.Node f
+textNode : List Attribute.Attribute -> List Style.Attribute -> String -> Node.Node
 textNode attrs style text_ =
     TextNode
         { text = text_
@@ -130,7 +137,7 @@ textNode attrs style text_ =
         }
 
 
-textArray : List Attribute.Attribute -> List Style.Attribute -> List (Node.Node f) -> Node.Node f
+textArray : List Attribute.Attribute -> List Style.Attribute -> List Node.Node -> Node.Node
 textArray attrs style nodes =
     TextArray
         { nodes = nodes
@@ -139,7 +146,7 @@ textArray attrs style nodes =
         }
 
 
-ul : List Attribute.Attribute -> List (Node.Node f) -> Node.Node f
+ul : List Attribute.Attribute -> List Node.Node -> Node.Node
 ul attrs items =
     UnorderedListNode
         { ul = items

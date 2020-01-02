@@ -1,15 +1,10 @@
 module Internal.Model.Node exposing
     ( Footer(..)
-    , Function(..)
     , Header(..)
-    , LineColor(..)
-    , LineWidth(..)
     , Node(..)
-    , Padding(..)
     , Table
     , TableAttribute(..)
     , TableCell(..)
-    , TableLayout(..)
     , TableWidth(..)
     )
 
@@ -20,14 +15,14 @@ import Internal.Object exposing (Value)
 import PdfMake.Page exposing (TextAlignment)
 
 
-type Node f
-    = ColumnsNode (Columns f)
-    | StackNode (Stack f)
-    | OrderedListNode (OrderedList f)
-    | UnorderedListNode (UnorderedList f)
-    | TableNode (Table f)
+type Node
+    = ColumnsNode Columns
+    | StackNode Stack
+    | OrderedListNode OrderedList
+    | UnorderedListNode UnorderedList
+    | TableNode Table
     | TextNode Text
-    | TextArray (Texts f)
+    | TextArray Texts
     | TableOfContentsNode
     | ImageSizeNode ImageSized
     | ImageFitNode ImageFitted
@@ -35,35 +30,12 @@ type Node f
     | ReferenceNode
 
 
-type Function f
-    = Function
-        { args : List Value
-        , function : f
-        }
-    | NodeFunction
-        { args : List (Node f)
-        , function : f
-        }
+type Header
+    = Header Node
 
 
-type Header f
-    = Header (Function f)
-
-
-type Footer f
-    = Footer (Function f)
-
-
-type LineWidth f
-    = LineWidth (Function f)
-
-
-type LineColor f
-    = LineColor (Function f)
-
-
-type Padding f
-    = Padding (Function f)
+type Footer
+    = Footer Node
 
 
 type TableWidth
@@ -72,39 +44,26 @@ type TableWidth
     | Inch Float
 
 
-type TableLayout f
-    = DefaultBorder Bool
-    | FillColor (Function f)
-    | LineWidthHorizontal (LineWidth f)
-    | LineWidthVertical (LineWidth f)
-    | LineColorHorizontal (LineColor f)
-    | LineColorVertical (LineColor f)
-    | PaddingBottom (Padding f)
-    | PaddingLeft (Padding f)
-    | PaddingRight (Padding f)
-    | PaddingTop (Padding f)
-
-
-type alias Columns f =
-    { columns : List (Node f)
+type alias Columns =
+    { columns : List Node
     , attrs : List Attribute
     }
 
 
-type alias Stack f =
-    { stack : List (Node f)
+type alias Stack =
+    { stack : List Node
     , attrs : List Attribute
     }
 
 
-type alias OrderedList f =
-    { ol : List (Node f)
+type alias OrderedList =
+    { ol : List Node
     , attrs : List Attribute
     }
 
 
-type alias UnorderedList f =
-    { ul : List (Node f)
+type alias UnorderedList =
+    { ul : List Node
     , attrs : List Attribute
     }
 
@@ -117,15 +76,15 @@ type TableAttribute
     | RowSpan Int
 
 
-type TableCell f
-    = Cell (List TableAttribute) (Node f)
+type TableCell
+    = Cell (List TableAttribute) Node
     | EmptyCell
 
 
-type alias Table f =
-    { layout : List (TableLayout f)
-    , body : List (List (TableCell f))
-    , headers : List (List (TableCell f))
+type alias Table =
+    { layout : Maybe String
+    , body : List (List TableCell)
+    , headers : List (List TableCell)
     , widths : List TableWidth
     , attrs : List Attribute
     }
@@ -138,8 +97,8 @@ type alias Text =
     }
 
 
-type alias Texts f =
-    { nodes : List (Node f)
+type alias Texts =
+    { nodes : List Node
     , style : List Style.Attribute
     , attrs : List Attribute
     }

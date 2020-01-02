@@ -1,7 +1,11 @@
-module Internal.Model.Style exposing (Attribute(..))
+module Internal.Model.Style exposing (Attribute(..), Style)
 
 import Color
 import PdfMake.Page exposing (TextAlignment)
+
+
+type alias Style =
+    List Attribute
 
 
 type Attribute
