@@ -26,8 +26,8 @@ type alias TableWidth =
     Model.TableWidth
 
 
-type alias TableCell =
-    Model.TableCell
+type alias TableCell layout image =
+    Model.TableCell layout image
 
 
 align : TextAlignment -> TableAttribute
@@ -45,12 +45,12 @@ border =
     Border
 
 
-cell : List TableAttribute -> Node -> TableCell
+cell : List TableAttribute -> Node layout image -> TableCell layout image
 cell =
     Cell
 
 
-cell_ : String -> TableCell
+cell_ : String -> TableCell layout image
 cell_ text =
     Cell [] <|
         TextNode
@@ -65,7 +65,7 @@ colSpan =
     ColSpan
 
 
-emptyCell : TableCell
+emptyCell : TableCell layout image
 emptyCell =
     EmptyCell
 

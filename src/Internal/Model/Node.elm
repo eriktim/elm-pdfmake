@@ -14,27 +14,27 @@ import Internal.Model.Style as Style
 import PdfMake.Page exposing (TextAlignment)
 
 
-type Node
-    = ColumnsNode Columns
-    | StackNode Stack
-    | OrderedListNode OrderedList
-    | UnorderedListNode UnorderedList
-    | TableNode Table
+type Node layout image
+    = ColumnsNode (Columns layout image)
+    | StackNode (Stack layout image)
+    | OrderedListNode (OrderedList layout image)
+    | UnorderedListNode (UnorderedList layout image)
+    | TableNode (Table layout image)
     | TextNode Text
-    | TextArray Texts
+    | TextArray (Texts layout image)
     | TableOfContentsNode
-    | ImageSizeNode ImageSized
-    | ImageFitNode ImageFitted
+    | ImageSizeNode (ImageSized image)
+    | ImageFitNode (ImageFitted image)
     | CanvasNode
     | ReferenceNode
 
 
-type Header
-    = Header Node
+type Header layout image
+    = Header (Node layout image)
 
 
-type Footer
-    = Footer Node
+type Footer layout image
+    = Footer (Node layout image)
 
 
 type TableWidth
@@ -43,26 +43,26 @@ type TableWidth
     | Inch Float
 
 
-type alias Columns =
-    { columns : List Node
+type alias Columns layout image =
+    { columns : List (Node layout image)
     , attrs : List Attribute
     }
 
 
-type alias Stack =
-    { stack : List Node
+type alias Stack layout image =
+    { stack : List (Node layout image)
     , attrs : List Attribute
     }
 
 
-type alias OrderedList =
-    { ol : List Node
+type alias OrderedList layout image =
+    { ol : List (Node layout image)
     , attrs : List Attribute
     }
 
 
-type alias UnorderedList =
-    { ul : List Node
+type alias UnorderedList layout image =
+    { ul : List (Node layout image)
     , attrs : List Attribute
     }
 
@@ -75,15 +75,15 @@ type TableAttribute
     | RowSpan Int
 
 
-type TableCell
-    = Cell (List TableAttribute) Node
+type TableCell layout image
+    = Cell (List TableAttribute) (Node layout image)
     | EmptyCell
 
 
-type alias Table =
-    { layout : Maybe String
-    , body : List (List TableCell)
-    , headers : List (List TableCell)
+type alias Table layout image =
+    { layout : Maybe layout
+    , body : List (List (TableCell layout image))
+    , headers : List (List (TableCell layout image))
     , widths : List TableWidth
     , attrs : List Attribute
     }
@@ -96,23 +96,23 @@ type alias Text =
     }
 
 
-type alias Texts =
-    { nodes : List Node
+type alias Texts layout image =
+    { nodes : List (Node layout image)
     , style : List Style.Attribute
     , attrs : List Attribute
     }
 
 
-type alias ImageSized =
-    { image : String
+type alias ImageSized image =
+    { image : image
     , width : Float -- TODO Maybe
     , height : Float -- TODO Maybe
     , attrs : List Attribute
     }
 
 
-type alias ImageFitted =
-    { image : String
+type alias ImageFitted image =
+    { image : image
     , width : Float
     , height : Float
     , attrs : List Attribute

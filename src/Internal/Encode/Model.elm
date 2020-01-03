@@ -9,25 +9,22 @@ import Json.Encode as Encode
 import PdfMake.Page exposing (PageOrientation(..))
 
 
-encode : Model -> Encode.Value
-encode model =
+encode : (layout -> String) -> (image -> String) -> Model layout image -> Encode.Value
+encode layoutToString imageToString model =
+    let
+        encodeHeader (Header node) =
+            Node.encode layoutToString imageToString node
+
+        encodeFooter (Footer node) =
+            Node.encode layoutToString imageToString node
+    in
     Encode.object
         [ ( "pageSize", Page.encodePageSize model.pageSize )
         , ( "pageOrientation", Page.encodePageOrientation <| Maybe.withDefault Portrait model.pageOrientation )
         , ( "pageMargins", Page.encodePageMargins <| Maybe.withDefault { left = 1, top = 1, right = 1, bottom = 1 } model.pageMargins )
-        , ( "content", Encode.list Node.encode model.content )
+        , ( "content", Encode.list (Node.encode layoutToString imageToString) model.content )
         , ( "defaultStyle", Style.encode <| Maybe.withDefault [] model.defaultStyle )
         , ( "styles", Encode.dict identity Style.encode model.styles )
         , ( "header", Maybe.withDefault Encode.null <| Maybe.map encodeHeader model.header )
         , ( "footer", Maybe.withDefault Encode.null <| Maybe.map encodeFooter model.footer )
         ]
-
-
-encodeHeader : Header -> Encode.Value
-encodeHeader (Header node) =
-    Node.encode node
-
-
-encodeFooter : Footer -> Encode.Value
-encodeFooter (Footer node) =
-    Node.encode node

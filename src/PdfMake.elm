@@ -13,19 +13,19 @@ import Json.Encode as Encode
 import PdfMake.Page exposing (PageSize(..))
 
 
-type PdfMake
-    = PdfMake Model
+type PdfMake layout image
+    = PdfMake (Model layout image)
 
 
 doc :
     PageSize
     -> { left : Float, top : Float, right : Float, bottom : Float }
-    -> Maybe Header
-    -> Maybe Footer
+    -> Maybe (Header layout image)
+    -> Maybe (Footer layout image)
     -> Style.Style
     -> Dict.Dict String Style.Style
-    -> List Node
-    -> PdfMake
+    -> List (Node layout image)
+    -> PdfMake layout image
 doc pageSize margins header footer style styles nodes =
     PdfMake
         { pageSize = pageSize
@@ -39,6 +39,6 @@ doc pageSize margins header footer style styles nodes =
         }
 
 
-encode : PdfMake -> Encode.Value
-encode (PdfMake model) =
-    Model.encode model
+encode : (layout -> String) -> (image -> String) -> PdfMake layout image -> Encode.Value
+encode layoutToString imageToString (PdfMake model) =
+    Model.encode layoutToString imageToString model

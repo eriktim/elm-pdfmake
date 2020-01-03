@@ -23,43 +23,43 @@ import Internal.Model.Node as Node exposing (Node(..), TableWidth)
 import Internal.Model.Style as Style
 
 
-type alias Node =
-    Node.Node
+type alias Node layout image =
+    Node.Node layout image
 
 
-type alias Header =
-    Node.Header
+type alias Header layout image =
+    Node.Header layout image
 
 
-type alias Footer =
-    Node.Footer
+type alias Footer layout image =
+    Node.Footer layout image
 
 
-type alias Table record =
-    { layout : Maybe String
+type alias Table layout image record =
+    { layout : Maybe layout
     , records : List record
-    , columns : List (TableColumn record)
+    , columns : List (TableColumn layout image record)
     }
 
 
-type alias TableColumn record =
-    { header : Node.TableCell
+type alias TableColumn layout image record =
+    { header : Node.TableCell layout image
     , width : TableWidth
-    , cell : record -> Node.TableCell
+    , cell : record -> Node.TableCell layout image
     }
 
 
-header : Node.Node -> Node.Header
+header : Node.Node layout image -> Node.Header layout image
 header =
     Node.Header
 
 
-footer : Node.Node -> Node.Footer
+footer : Node.Node layout image -> Node.Footer layout image
 footer =
     Node.Footer
 
 
-columns : List Attribute.Attribute -> List Node.Node -> Node.Node
+columns : List Attribute.Attribute -> List (Node.Node layout image) -> Node.Node layout image
 columns attrs columns_ =
     ColumnsNode
         { columns = columns_
@@ -67,27 +67,27 @@ columns attrs columns_ =
         }
 
 
-image : List Attribute.Attribute -> Float -> Float -> String -> Node.Node
-image attrs width height dataUrl =
+image : List Attribute.Attribute -> Float -> Float -> image -> Node.Node layout image
+image attrs width height image_ =
     ImageSizeNode
-        { image = dataUrl
+        { image = image_
         , width = width
         , height = height
         , attrs = attrs
         }
 
 
-imageFit : List Attribute.Attribute -> Float -> Float -> String -> Node.Node
-imageFit attrs width height dataUrl =
+imageFit : List Attribute.Attribute -> Float -> Float -> image -> Node.Node layout image
+imageFit attrs width height image_ =
     ImageFitNode
-        { image = dataUrl
+        { image = image_
         , width = width
         , height = height
         , attrs = attrs
         }
 
 
-ol : List Attribute.Attribute -> List Node.Node -> Node.Node
+ol : List Attribute.Attribute -> List (Node.Node layout image) -> Node.Node layout image
 ol attrs items =
     OrderedListNode
         { ol = items
@@ -95,7 +95,7 @@ ol attrs items =
         }
 
 
-stack : List Attribute.Attribute -> List Node.Node -> Node.Node
+stack : List Attribute.Attribute -> List (Node.Node layout image) -> Node.Node layout image
 stack attrs stack_ =
     StackNode
         { stack = stack_
@@ -103,7 +103,7 @@ stack attrs stack_ =
         }
 
 
-table : List Attribute.Attribute -> Table records -> Node.Node
+table : List Attribute.Attribute -> Table layout image records -> Node.Node layout image
 table attrs table_ =
     let
         widths =
@@ -129,7 +129,7 @@ table attrs table_ =
         }
 
 
-text : List Style.Attribute -> String -> Node.Node
+text : List Style.Attribute -> String -> Node.Node layout image
 text style text_ =
     TextNode
         { text = text_
@@ -138,7 +138,7 @@ text style text_ =
         }
 
 
-textNode : List Attribute.Attribute -> List Style.Attribute -> String -> Node.Node
+textNode : List Attribute.Attribute -> List Style.Attribute -> String -> Node.Node layout image
 textNode attrs style text_ =
     TextNode
         { text = text_
@@ -147,7 +147,7 @@ textNode attrs style text_ =
         }
 
 
-textArray : List Attribute.Attribute -> List Style.Attribute -> List Node.Node -> Node.Node
+textArray : List Attribute.Attribute -> List Style.Attribute -> List (Node.Node layout image) -> Node.Node layout image
 textArray attrs style nodes =
     TextArray
         { nodes = nodes
@@ -156,7 +156,7 @@ textArray attrs style nodes =
         }
 
 
-ul : List Attribute.Attribute -> List Node.Node -> Node.Node
+ul : List Attribute.Attribute -> List (Node.Node layout image) -> Node.Node layout image
 ul attrs items =
     UnorderedListNode
         { ul = items
