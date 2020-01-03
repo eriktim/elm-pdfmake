@@ -1,5 +1,7 @@
 module PdfMake.Node exposing
-    ( Node
+    ( Footer
+    , Header
+    , Node
     , Table
     , TableColumn
     , columns
@@ -23,6 +25,14 @@ import Internal.Model.Style as Style
 
 type alias Node =
     Node.Node
+
+
+type alias Header =
+    Node.Header
+
+
+type alias Footer =
+    Node.Footer
 
 
 type alias Table record =
